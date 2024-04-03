@@ -34,6 +34,7 @@ services:
     command: npm run start:dev
   fluentd:
     # image: registry.cn-shenzhen.aliyuncs.com/cnregistry/fluentd-es:v1.16.2-debian-1.1
+    platform: linux/amd64
     build: ./fluentd
     volumes:
       - ./fluentd/conf:/fluentd/etc
@@ -63,3 +64,14 @@ services:
       - "5601:5601"  
     environment:
       ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
+  mysql:
+      image: mysql:8.0
+      container_name: mysql-youpt
+      ports:
+        - 3306:3306 # HOST:CONTAINER
+      environment:
+        MYSQL_ROOT_PASSWORD: "1234"
+        TZ: Asia/Seoul
+      command:
+        - --character-set-server=utf8mb4
+        - --collation-server=utf8mb4_unicode_ci
