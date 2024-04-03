@@ -7,7 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Menu } from './menus';
+import { Menu } from './menus.entity';
 
 @Entity({name:"meals"})
 export class Meal {

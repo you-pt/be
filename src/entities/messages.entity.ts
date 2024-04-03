@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Schedule } from './schedules';
+import { Schedule } from './schedules.entity';
 
 @Entity()
 export class Message {
