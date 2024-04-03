@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Schedule } from './schedules.entity';
+import { User } from '../user/entities/user.entity';
 
 @Entity()
 export class Message {
