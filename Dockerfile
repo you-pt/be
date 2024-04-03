@@ -16,7 +16,7 @@ RUN npm install
 # Creates a "dist" folder with the production build
 RUN npm run build
 # AS production
-FROM node:18-alpine
+FROM node:18 AS production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
@@ -25,7 +25,7 @@ WORKDIR /usr/src/app
 
 COPY --from=development /usr/src/app ./
 
-EXPOSE 3000
+EXPOSE 3001
 
 # Start the server using the production build
 CMD ["npm", "run", "start:dev"]
