@@ -59,4 +59,5 @@ export class User {
 
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   schedules: Schedule[];
+  userId: any;
 }

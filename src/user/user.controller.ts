@@ -10,16 +10,34 @@ import { UserInfo } from './utils/userInfo.decorator';
 import { Role } from './types/userRole.type';
 import { Roles } from 'auth/roles.decorator';
 import { RolesGuard } from 'auth/roles.guard';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags("사용자 API")
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @ApiOperation({ summary: "회원가입"})
+  @ApiBody({schema:{
+    properties:{
+      email:{ type: "email", example: "asdf@gmail.com"},
+      password:{ type: "string", example: "12345678"},
+      nickname: {type: "string", example: "이렐리아"},
+      role: {type: "string", example: 'user'}
+    }
+  }})
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto) {
     return this.userService.register(createUserDto);
   }
 
+  @ApiOperation({ summary: "로그인"})
+  @ApiBody({schema:{
+    properties:{
+      email:{ type: "email", example: "asdf@gmail.com"},
+      password:{ type: "string", example: "12345678"}
+    }
+  }})
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
     const jwt = await this.userService.login(loginDto);

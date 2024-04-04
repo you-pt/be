@@ -19,13 +19,13 @@ export class Meal {
   userId: number;
 
   @ManyToOne(() => User, (User) => User.meals, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   reportAI: string
 
-  @Column()
+  @Column({ nullable: true })
   report: string
 
   @CreateDateColumn()

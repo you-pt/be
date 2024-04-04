@@ -12,7 +12,7 @@ import {
   FluentLogger,
   FluentConnection,
 } from '@dynatech-corp/nestjs-fluentd-logger';
-
+import { DietModule } from './diet/diet.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -25,7 +25,7 @@ const typeOrmModuleOptions = {
     host: configService.get('DB_HOST'),
     port: configService.get('DB_PORT'),
     database: configService.get('DB_NAME'),
-    entities: [User], // 엔티티는 반드시 여기에 명시!
+    entities: [__dirname + '/**/*.entity.{js,ts}'], // 엔티티는 반드시 여기에 명시!
     synchronize: configService.get('DB_SYNC'),
     logging: true,
   }),
@@ -49,6 +49,7 @@ const typeOrmModuleOptions = {
     UserModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    DietModule,
   ],
   controllers: [AppController],
   providers: [AppService, FluentConnection,
