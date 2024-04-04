@@ -6,7 +6,7 @@ import { compare, hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
 import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from './types/userRole.type';
 

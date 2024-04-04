@@ -4,14 +4,16 @@ import {
   Entity,
   Index,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Role } from '../types/userRole.type';
-import { Gender } from '../types/gender.type';
-import { Meal } from '../../entities/meals.entity';
-import { Message } from '../../entities/messages.entity';
-import { Schedule } from '../../entities/schedules.entity';
+import { Role } from '../user/types/userRole.type';
+import { Gender } from '../user/types/gender.type';
+import { Meal } from './meals.entity';
+import { Message } from './messages.entity';
+import { Schedule } from './schedules.entity';
+import { TrainerInfo } from 'src/entities/trainerInfo';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -30,17 +32,17 @@ export class User {
   @Column({ type: 'varchar', select: false, nullable: false })
   password: string;
 
-  //   @Column({ type: 'varchar', nullable: false })
-  //   name: string;
+  @Column({ type: 'varchar', nullable: false })
+  name: string;
 
-  //   @Column({ type: 'enum', enum: Gender, nullable: false })
-  //   gender: Gender;
+  @Column({ type: 'enum', enum: Gender, nullable: false })
+  gender: Gender;
 
-  //   @Column({ type: 'varchar', nullable: false })
-  //   phone: string;
+  @Column({ type: 'varchar', nullable: false })
+  phone: string;
 
-  //   @Column({ type: 'varchar', nullable: false })
-  //   birth: string;
+  @Column({ type: 'varchar', nullable: false })
+  birth: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.User, nullable: false })
   role: Role;
@@ -59,4 +61,9 @@ export class User {
 
   @OneToMany(() => Schedule, (schedule) => schedule.user)
   schedules: Schedule[];
+
+  @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {
+    cascade: true,
+  })
+  trainerInfo: TrainerInfo
 }
