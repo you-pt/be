@@ -13,7 +13,7 @@ import { Gender } from '../user/types/gender.type';
 import { Meal } from './meals.entity';
 import { Message } from './messages.entity';
 import { Schedule } from './schedules.entity';
-import { TrainerInfo } from 'src/entities/trainerInfo';
+import { TrainerInfo } from './trainerInfo.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({

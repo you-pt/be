@@ -1,4 +1,4 @@
-import { User } from 'src/entities/user.entity';
+import { User } from './user.entity';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({name: "trainInfos"})
