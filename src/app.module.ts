@@ -1,4 +1,4 @@
-import { ConsoleLogger, Logger, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -7,10 +7,7 @@ import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
-import {
-  FluentLogger,
-  FluentConnection,
-} from '@dynatech-corp/nestjs-fluentd-logger';
+import { LoggerMiddleware } from './middlewares/logger.middleware';
 
 
 const typeOrmModuleOptions = {
@@ -47,45 +44,13 @@ const typeOrmModuleOptions = {
     }),
     UserModule,
     AuthModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
   ],
   controllers: [AppController],
-  providers: [AppService, FluentConnection,
-    {
-      provide: FluentConnection,
-      useFactory: (config: ConfigService) => {
-        return new FluentConnection({
-          prefix: config.get<string>('LOGS_PROJECT'),
-          connection: {
-            socket: {
-              host: config.get<string>('LOGS_HOST'),
-              port: config.get<number>('LOGS_PORT'),
-              timeout: config.get<number>('LOGS_TIMEOUT'),
-            },
-          },
-        });
-      },
-      inject: [ConfigService],
-    }, FluentLogger,
-    {
-      provide: Logger,
-      useFactory: (config: ConfigService, fluent: FluentConnection) => {
-        // get LOGS_OUTPUT variable value
-        const output = config.get<string>('LOGS_OUTPUT');
-        // create NestJS ConsoleLogger for development (console)
-        if (output === 'console') {
-          return new ConsoleLogger(undefined, { timestamp: true });
-        }
-        // create FluentLogger instance for staging / production
-        if (output === 'fluent') {
-          return new FluentLogger(fluent);
-        }
-        // throw error when the variable is not Configured
-        throw new Error('LOGS_OUTPUT should be console|fluent');
-      },
-      // inject ConfigService - for configuration values
-      // inject FluentConnection - for when FluentLogger is instantiated
-      inject: [ConfigService, FluentConnection],
-    },],
+  providers: [AppService]
 })
-export class AppModule { }
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+      consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
