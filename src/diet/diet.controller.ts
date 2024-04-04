@@ -10,7 +10,7 @@ import { DietService } from './diet.service';
 import { CreateDietDto } from './dto/create-diet.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from '../user/utils/userInfo.decorator';
-import { User } from '../user/entities/user.entity';
+import { User } from '../entities/user.entity';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('식단 관리 API')

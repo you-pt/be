@@ -5,7 +5,6 @@ import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
-import { User } from './user/entities/user.entity';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import {
@@ -68,7 +67,7 @@ const typeOrmModuleOptions = {
         });
       },
       inject: [ConfigService],
-    }, // FluentLogger,
+    }, FluentLogger,
     {
       provide: Logger,
       useFactory: (config: ConfigService, fluent: FluentConnection) => {
