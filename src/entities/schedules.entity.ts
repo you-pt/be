@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { User } from '../user/entities/user.entity';
+import { User } from './user.entity';
 import { Message } from './messages.entity';
 
 @Entity({ name: 'schedules' })
@@ -20,7 +20,7 @@ export class Schedule {
   userId: number;
 
   @ManyToOne(() => User, (user) => user.schedules)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
   @Column()

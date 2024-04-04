@@ -1,4 +1,5 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { User } from 'src/entities/user.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({name: "trainInfos"})
 export class TrainerInfo{
@@ -8,8 +9,8 @@ export class TrainerInfo{
   @Column()
   userId: number
 
-  @OneToOne(() => User, user => user.userId, { onDelete: 'CASCADE' })
-  @JoinColumn({name: "userId", referencedColumnName: "userId"})
+  @OneToOne(() => User, user => user.trainerInfo, { onDelete: 'CASCADE' })
+  @JoinColumn({name: "userId", referencedColumnName: "id"})
   user: User
 
   @Column()
@@ -18,6 +19,6 @@ export class TrainerInfo{
   @Column()
   career: string
 
-  @Column()
+  @Column({type: 'json', nullable: false})
   certifications: string[]
 }
