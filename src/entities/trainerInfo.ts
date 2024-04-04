@@ -1,23 +1,31 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { User } from 'src/user/entities/user.entity';
 
-@Entity({name: "trainInfos"})
-export class TrainerInfo{
+@Entity({ name: 'trainInfos' })
+export class TrainerInfo {
   @PrimaryGeneratedColumn()
   trainerInfoId: number;
-  
-  @Column()
-  userId: number
-
-  @OneToOne(() => User, user => user.userId, { onDelete: 'CASCADE' })
-  @JoinColumn({name: "userId", referencedColumnName: "userId"})
-  user: User
 
   @Column()
-  major: string
+  userId: number;
+
+  @OneToOne(() => User, (user) => user.id, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  user: User;
 
   @Column()
-  career: string
+  major: string;
 
   @Column()
-  certifications: string[]
+  career: string;
+
+  @Column()
+  certifications: string[];
 }
