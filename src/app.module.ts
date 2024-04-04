@@ -1,6 +1,7 @@
 import { ConsoleLogger, Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GptModule } from './gpt/gpt.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -11,7 +12,6 @@ import {
   FluentLogger,
   FluentConnection,
 } from '@dynatech-corp/nestjs-fluentd-logger';
-
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -46,11 +46,14 @@ const typeOrmModuleOptions = {
       }),
     }),
     UserModule,
+    GptModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
   ],
   controllers: [AppController],
-  providers: [AppService, FluentConnection,
+  providers: [
+    AppService,
+    FluentConnection,
     {
       provide: FluentConnection,
       useFactory: (config: ConfigService) => {
@@ -66,7 +69,8 @@ const typeOrmModuleOptions = {
         });
       },
       inject: [ConfigService],
-    }, FluentLogger,
+    },
+    FluentLogger,
     {
       provide: Logger,
       useFactory: (config: ConfigService, fluent: FluentConnection) => {
@@ -86,6 +90,7 @@ const typeOrmModuleOptions = {
       // inject ConfigService - for configuration values
       // inject FluentConnection - for when FluentLogger is instantiated
       inject: [ConfigService, FluentConnection],
-    },],
+    },
+  ],
 })
-export class AppModule { }
+export class AppModule {}

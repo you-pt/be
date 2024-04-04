@@ -13,7 +13,7 @@ import { Gender } from '../user/types/gender.type';
 import { Meal } from './meals.entity';
 import { Message } from './messages.entity';
 import { Schedule } from './schedules.entity';
-import { TrainerInfo } from 'src/entities/trainerInfo';
+import { TrainerInfo } from 'src/entities/trainerInfo.entity';
 
 @Index('email', ['email'], { unique: true })
 @Entity({
@@ -65,5 +65,5 @@ export class User {
   @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {
     cascade: true,
   })
-  trainerInfo: TrainerInfo
+  trainerInfo: TrainerInfo;
 }
