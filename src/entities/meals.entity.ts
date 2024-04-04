@@ -19,7 +19,7 @@ export class Meal {
   userId: number;
 
   @ManyToOne(() => User, (User) => User.meals, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
   @Column({ nullable: true })

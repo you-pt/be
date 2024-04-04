@@ -23,8 +23,13 @@ export class UserController {
     properties:{
       email:{ type: "email", example: "asdf@gmail.com"},
       password:{ type: "string", example: "12345678"},
+      passwordConfirm:{ type: "string", example: "12345678"},
       nickname: {type: "string", example: "이렐리아"},
-      role: {type: "string", example: 'user'}
+      role: {type: "string", example: 'user'},
+      name: {type: "string", example: '이름이'},
+      gender: {type: "string", example: 'male'},
+      phone: {type: "string", example: '011-1010-1010'},
+      birth: {type: "string", example: '1999-01-11'},
     }
   }})
   @Post('register')

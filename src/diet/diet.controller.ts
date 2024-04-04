@@ -5,6 +5,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Get,
 } from '@nestjs/common';
 import { DietService } from './diet.service';
 import { CreateDietDto } from './dto/create-diet.dto';
@@ -48,8 +49,19 @@ export class DietController {
     return this.dietService.create(+user.id, createDietDto);
   }
 
-  @ApiOperation({summary: "식단 삭제"})
-  @ApiParam({ name: "mealId", required: true, description: "number"})
+  @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({ summary: '1식단의 메뉴 조회' })
+  @ApiParam({ name: 'mealId', required: true, description: 'number' })
+  @Get(':mealId')
+  async findMenus(@UserInfo() user: User, @Param("mealId") mealId: number) {
+    console.log(+user.id)
+    // console.log(+mealId)
+    // console.log(+user.id, +mealId)
+    return await this.dietService.findMenus(+user.id, +mealId);
+  }
+
+  @ApiOperation({ summary: '식단 삭제' })
+  @ApiParam({ name: 'mealId', required: true, description: 'number' })
   @Delete(':mealId')
   remove(@Param('mealId') mealId: string) {
     return this.dietService.remove(+mealId);

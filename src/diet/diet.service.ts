@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDietDto } from './dto/create-diet.dto';
 import { UpdateDietDto } from './dto/update-diet.dto';
-import { Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Menu } from '../entities/menus.entity';
 import { Meal } from '../entities/meals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -9,6 +9,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 @Injectable()
 export class DietService {
   constructor(
+    private readonly dataSource: DataSource,
     @InjectRepository(Menu)
     private readonly menuRepository: Repository<Menu>,
     @InjectRepository(Meal)
@@ -35,8 +36,16 @@ export class DietService {
     return { meal: newMeal, menu: newMenus};
   }
 
-  async findMenus(mealId: number) {
-    const menus = await this.menuRepository.findBy({ mealId });
+  async findMenus(userId: number, mealId: number) {
+    const menus = await this.dataSource
+        .createQueryBuilder(Menu, "menu")
+        // .select(["*"])
+        .select(["menu.menuId", "menu.mealId", "meal.userId", "menu.name", "menu.kcal"])
+        .leftJoin("menu.meal", "meal", "menu.mealId = meal.mealId")
+        .where("menu.mealId = :mealId", {mealId})
+        .andWhere("meal.userId = :userId", {userId})
+        .getMany()
+    // const menus = await this.menuRepository.findBy({ mealId });
     return menus;
   }
 
