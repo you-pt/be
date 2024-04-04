@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  dietManager,
   dietManagerWithCsv,
   imageToText,
   prosConsDiscusserStreamUseCase,
@@ -18,12 +17,6 @@ import csv from 'csv-parser';
 @Injectable()
 export class GptService {
   private openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-
-  public async dietManager(prosConsDiscusserDto: ProsConsDiscusserDto) {
-    return await dietManager(this.openai, {
-      prompt: prosConsDiscusserDto.prompt,
-    });
-  }
 
   public async dietManagerWithCsvUsingLocalData(
     prosConsDiscusserDto: ProsConsDiscusserDto,

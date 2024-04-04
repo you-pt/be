@@ -11,11 +11,6 @@ import {
 export class GptController {
   constructor(private readonly gptService: GptService) {}
 
-  @Post('dietManager')
-  public async dietManager(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
-    return this.gptService.dietManager(prosConsDiscusserDto);
-  }
-
   @Post('imageToText')
   public async imageToText(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
     return this.gptService.imageToText(prosConsDiscusserDto);
