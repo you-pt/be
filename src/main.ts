@@ -1,8 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { winstonLogger } from '../utils/winsoton.config';
-import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ValidationPipe } from '@nestjs/common';
+import { winstonLogger } from '../utils/winston.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(

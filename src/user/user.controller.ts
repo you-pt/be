@@ -10,7 +10,6 @@ import { UserInfo } from './utils/userInfo.decorator';
 import { Role } from './types/userRole.type';
 import { Roles } from '../../auth/roles.decorator';
 import { RolesGuard } from '../../auth/roles.guard';
-import { log } from 'console';
 
 @Controller('user')
 export class UserController {
