@@ -1,6 +1,7 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GptModule } from './gpt/gpt.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
@@ -8,7 +9,6 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
-
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -43,6 +43,7 @@ const typeOrmModuleOptions = {
       }),
     }),
     UserModule,
+    GptModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions)
   ],
