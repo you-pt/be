@@ -9,6 +9,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ImageModule } from './image/image.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -45,7 +46,8 @@ const typeOrmModuleOptions = {
     UserModule,
     GptModule,
     AuthModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    ImageModule
   ],
   controllers: [AppController],
   providers: [AppService]
