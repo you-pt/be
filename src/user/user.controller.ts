@@ -8,9 +8,8 @@ import { User } from '../entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from './utils/userInfo.decorator';
 import { Role } from './types/userRole.type';
-import { Roles } from 'auth/roles.decorator';
-import { RolesGuard } from 'auth/roles.guard';
-import { log } from 'console';
+import { Roles } from '../../auth/roles.decorator';
+import { RolesGuard } from '../../auth/roles.guard';
 
 @Controller('user')
 export class UserController {
@@ -23,7 +22,7 @@ export class UserController {
 
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const jwt = await this.userService.login(loginDto);
+    const jwt = await  this.userService.login(loginDto);
     res.cookie('Authorization', jwt.access_token, {
         httpOnly: true,
         maxAge: 12 * 60 * 60 * 1000
@@ -34,7 +33,6 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Get('info')
   getEmail(@UserInfo() user: User) {
-    log('API "INFO"')
     return { email: user.email, name: user.nickname };
   }
 

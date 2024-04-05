@@ -1,21 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common';
+import { winstonLogger } from '../utils/winston.config';
 
 async function bootstrap() {
   const app = await NestFactory.create(
     AppModule, {
-    bufferLogs: true
+    logger: winstonLogger,
   });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
     }),
   );
-
-  app.useLogger(await app.resolve(Logger));
-  // flush logs after we setup the logger
-  app.flushLogs();
   await app.listen(3001);
 }
 bootstrap();
