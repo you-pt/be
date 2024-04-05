@@ -7,7 +7,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Schedule } from './schedules.entity';
-import { User } from '../user/entities/user.entity';
+import { User } from './user.entity';
 
 @Entity()
 export class Message {
@@ -18,7 +18,7 @@ export class Message {
   userId: number;
 
   @ManyToOne(() => User, (user) => user.messages)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'userId' })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
   @Column()

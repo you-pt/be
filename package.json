@@ -44,6 +44,7 @@
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.9.3",
     "nest-winston": "^1.9.4",
+    "openvidu-node-client": "^2.29.0",
     "papaparse": "^5.4.1",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
