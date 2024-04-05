@@ -24,7 +24,9 @@ services:
       options:
         fluentd-address: localhost:24224
         fluentd-async-connect: "true"
-        tag: TypeValidatorService
+        labels: "production_status"
+        tag: "LOG"
+        # TypeValidatorService
     ports:
       - 3001:3001
       # debugging port

@@ -1,13 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Logger, ValidationPipe } from '@nestjs/common';
-import { FluentLogger } from '@dynatech-corp/nestjs-fluentd-logger';
+import { ValidationPipe } from '@nestjs/common';
+import { winstonLogger } from '../utils/winston.config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule, {
-    bufferLogs: true
+  const app = await NestFactory.create(AppModule, {
+    logger: winstonLogger,
   });
   app.useGlobalPipes(
     new ValidationPipe({
@@ -15,9 +14,7 @@ async function bootstrap() {
     }),
   );
 
-  app.useLogger(await app.resolve(Logger));
-  // flush logs after we setup the logger
-  app.flushLogs();
+  app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('YOU-PT API')
     .setDescription('YOU-PT API 테스트 입니다.')

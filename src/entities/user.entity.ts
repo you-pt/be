@@ -65,5 +65,5 @@ export class User {
   @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {
     cascade: true,
   })
-  trainerInfo: TrainerInfo
+  trainerInfo: TrainerInfo;
 }

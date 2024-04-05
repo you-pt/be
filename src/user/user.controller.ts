@@ -46,7 +46,7 @@ export class UserController {
   }})
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res({ passthrough: true }) res: Response) {
-    const jwt = await this.userService.login(loginDto);
+    const jwt = await  this.userService.login(loginDto);
     res.cookie('Authorization', jwt.access_token, {
         httpOnly: true,
         maxAge: 12 * 60 * 60 * 1000
@@ -57,7 +57,6 @@ export class UserController {
   @UseGuards(AuthGuard('jwt'))
   @Get('info')
   getEmail(@UserInfo() user: User) {
-    log('API "INFO"')
     return { email: user.email, name: user.nickname };
   }
 
