@@ -1,3 +1,4 @@
+import { LiveModule } from './live/live.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -45,13 +46,14 @@ const typeOrmModuleOptions = {
     UserModule,
     GptModule,
     AuthModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
+    LiveModule,
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

@@ -4,8 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { winstonLogger } from '../utils/winston.config';
 
 async function bootstrap() {
-  const app = await NestFactory.create(
-    AppModule, {
+  const app = await NestFactory.create(AppModule, {
     logger: winstonLogger,
   });
   app.useGlobalPipes(
@@ -13,6 +12,8 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  app.enableCors();
   await app.listen(3001);
 }
 bootstrap();
