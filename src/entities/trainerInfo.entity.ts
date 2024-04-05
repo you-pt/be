@@ -1,30 +1,24 @@
-import { User } from 'src/entities/user.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { User } from './user.entity';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
 
-@Entity({ name: 'trainInfos' })
-export class TrainerInfo {
+@Entity({name: "trainInfos"})
+export class TrainerInfo{
   @PrimaryGeneratedColumn()
   trainerInfoId: number;
+  
+  @Column()
+  userId: number
+
+  @OneToOne(() => User, user => user.trainerInfo, { onDelete: 'CASCADE' })
+  @JoinColumn({name: "userId", referencedColumnName: "id"})
+  user: User
 
   @Column()
-  userId: number;
-
-  @OneToOne(() => User, (user) => user.trainerInfo, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  user: User;
+  major: string
 
   @Column()
-  major: string;
+  career: string
 
-  @Column()
-  career: string;
-
-  @Column({ type: 'json', nullable: false })
-  certifications: string[];
+  @Column({type: 'json', nullable: false})
+  certifications: string[]
 }
