@@ -10,7 +10,7 @@ import {
 import { Menu } from './menus.entity';
 import { User } from './user.entity';
 
-@Entity({name:"meals"})
+@Entity({ name: 'meals' })
 export class Meal {
   @PrimaryGeneratedColumn()
   mealId: number;
@@ -23,14 +23,14 @@ export class Meal {
   user: User;
 
   @Column()
-  reportAI: string
+  reportAI: string;
 
   @Column()
-  report: string
+  report: string;
 
   @CreateDateColumn()
-  createdAt: string
+  createdAt: string;
 
-  @OneToMany(() => Menu, menu => menu.meal)
-  menus: Menu[]
+  @OneToMany(() => Menu, (menu) => menu.meal)
+  menus: Menu[];
 }
