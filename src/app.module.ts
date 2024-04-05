@@ -10,6 +10,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { DietModule } from './diet/diet.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -48,6 +49,7 @@ const typeOrmModuleOptions = {
     AuthModule,
     LiveModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    DietModule,
   ],
   controllers: [AppController],
   providers: [AppService],
