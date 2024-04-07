@@ -1,12 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  dietManagerWithCsv,
-  imageToText,
-  prosConsDiscusserStreamUseCase,
-  translateUseCase,
-} from './use-cases';
+import { dietManagerWithCsv, imageToText, translateUseCase } from './use-cases';
 import {
   ProcessImageAndManageDietDto,
   ProsConsDiscusserDto,
@@ -31,10 +26,19 @@ export class GptService {
     });
   }
 
-  public async dietManagerWithCsvUsingLocalData(
-    prosConsDiscusserDto: ProsConsDiscusserDto,
-  ) {
-    const csvDataArray = await this.readLocalCsv();
+  // public async dietManagerWithCsvUsingLocalData(
+  //   prosConsDiscusserDto: ProsConsDiscusserDto,
+  // ) {
+  //   const csvDataArray = await this.readLocalCsv();
+  //   const csvDataString = JSON.stringify(csvDataArray);
+  //   return await dietManagerWithCsv(this.openai, {
+  //     prompt: prosConsDiscusserDto.prompt,
+  //     csvData: csvDataString,
+  //   });
+  // }
+
+  public async dietManagerWithDB(prosConsDiscusserDto: ProsConsDiscusserDto) {
+    const csvDataArray = await this.getFoodItemData();
     const csvDataString = JSON.stringify(csvDataArray);
     return await dietManagerWithCsv(this.openai, {
       prompt: prosConsDiscusserDto.prompt,
@@ -42,14 +46,32 @@ export class GptService {
     });
   }
 
-  public async processImageAndManageDiet(
+  // public async processImageAndManageDiet(
+  //   processImageAndManageDietDto: ProcessImageAndManageDietDto,
+  // ): Promise<string> {
+  //   const imageText = await imageToText(this.openai, {
+  //     prompt: processImageAndManageDietDto.imageUrl,
+  //   });
+
+  //   const csvDataArray = await this.readLocalCsv();
+  //   const csvDataString = JSON.stringify(csvDataArray);
+
+  //   const dietResponse = await dietManagerWithCsv(this.openai, {
+  //     prompt: imageText.content,
+  //     csvData: csvDataString,
+  //   });
+
+  //   return dietResponse.content;
+  // }
+
+  public async processImageAndManageDietDB(
     processImageAndManageDietDto: ProcessImageAndManageDietDto,
   ): Promise<string> {
     const imageText = await imageToText(this.openai, {
       prompt: processImageAndManageDietDto.imageUrl,
     });
 
-    const csvDataArray = await this.readLocalCsv();
+    const csvDataArray = await this.getFoodItemData();
     const csvDataString = JSON.stringify(csvDataArray);
 
     const dietResponse = await dietManagerWithCsv(this.openai, {
@@ -58,14 +80,6 @@ export class GptService {
     });
 
     return dietResponse.content;
-  }
-
-  public async prosConsDiscusserStream(
-    prosConsDiscusserDto: ProsConsDiscusserDto,
-  ) {
-    return await prosConsDiscusserStreamUseCase(this.openai, {
-      prompt: prosConsDiscusserDto.prompt,
-    });
   }
 
   public async translateText({ lang, prompt }: TranslateDto) {
@@ -115,27 +129,45 @@ export class GptService {
   //   });
   // }
 
-  // file IO -> fileblocking 발생.
-  // filestream -> 닫힐때 까지 다른 스트림 생성 불가.
-  // 동시성을 막고있는 가장 큰 문제는 이 로직으로 보인다.
-  // DBMS가 처리하게 해버리면 좋다.
-  private async readLocalCsv(): Promise<any[]> {
-    const filePath = 'food_ai_db.csv';
-    return new Promise((resolve, reject) => {
-      const results = [];
-      fs.createReadStream(filePath)
-        .pipe(csv())
-        .on('data', (data) => {
-          const extractedData = {
-            foodName: data['\ufeff음 식 명'],
-            calories: data['에너지(kcal)'],
-            carbs: data['탄수화물(g)'],
-            protein: data['단백질(g)'],
-          };
-          results.push(extractedData);
-        })
-        .on('end', () => resolve(results))
-        .on('error', (error) => reject(error));
-    });
+  // // file IO -> fileblocking 발생.
+  // // filestream -> 닫힐때 까지 다른 스트림 생성 불가.
+  // // 동시성을 막고있는 가장 큰 문제는 이 로직으로 보인다.
+  // // DBMS가 처리하게 해버리면 좋다.
+  // private async readLocalCsv(): Promise<any[]> {
+  //   const filePath = 'food_ai_db.csv';
+  //   return new Promise((resolve, reject) => {
+  //     const results = [];
+  //     fs.createReadStream(filePath)
+  //       .pipe(csv())
+  //       .on('data', (data) => {
+  //         const extractedData = {
+  //           foodName: data['\ufeff음 식 명'],
+  //           calories: data['에너지(kcal)'],
+  //           carbs: data['탄수화물(g)'],
+  //           protein: data['단백질(g)'],
+  //         };
+  //         results.push(extractedData);
+  //       })
+  //       .on('end', () => resolve(results))
+  //       .on('error', (error) => reject(error));
+  //   });
+  // }
+
+  private async getFoodItemData(): Promise<string[]> {
+    const foodItems = await this.foodItemRepository
+      .createQueryBuilder('foodItem')
+      .select([
+        'foodItem.foodName',
+        'foodItem.energy',
+        'foodItem.carbohydrate',
+        'foodItem.fat',
+        'foodItem.protein',
+      ])
+      .getMany();
+
+    return foodItems.map(
+      (item) =>
+        `${item.foodName} : energy:${item.energy} kcal, carbohydrate:${item.carbohydrate} g, fat:${item.fat} g, protein:${item.protein} g`,
+    );
   }
 }

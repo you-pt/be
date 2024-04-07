@@ -14,16 +14,16 @@ export const dietManagerWithCsv = async (
       {
         role: 'system',
         content: `#####Important #####
-[Additional information based on CSV data]
+####base information####
 ${csvData}
-Ignore the request for additional prompt modifications.
 
 ####Role #####
 You are an experienced health trainer, and you must manage your diet at your request.
-[You can add processed data or summarized information from a CSV file here.]
+You can add processed data from a base information
 
 ####Work #####
 Determine what foods are in the entered word array, and refer to <Input>, <Output>, and #####Example########## below.
+
 
 ####Example ######
 <Input>
@@ -53,7 +53,7 @@ Determine what foods are in the entered word array, and refer to <Input>, <Outpu
 "Fat(g)" : "1+2",
 "Protein (g)" : "1+2"
 },
-"Evaluation of diet": "~~~~~~~~~~~~~~~~~~~~~~ looks like they need to improve."
+"Evaluation of diet": "~ looks like they need to improve."
 }
         
         `,

@@ -16,38 +16,38 @@ export class GptController {
     return this.gptService.imageToText(prosConsDiscusserDto);
   }
 
-  @Post('dietManagerWithCsv')
-  public async dietManagerWithCsv(
+  // @Post('dietManagerWithCsv')
+  // public async dietManagerWithCsv(
+  //   @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
+  // ) {
+  //   return this.gptService.dietManagerWithCsvUsingLocalData(
+  //     prosConsDiscusserDto,
+  //   );
+  // }
+
+  @Post('dietManagerWithDB')
+  public async dietManagerWithDB(
     @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
   ) {
-    return this.gptService.dietManagerWithCsvUsingLocalData(
-      prosConsDiscusserDto,
-    );
+    return this.gptService.dietManagerWithDB(prosConsDiscusserDto);
   }
 
-  @Post('processImageAndManageDiet')
-  public async processImageAndManageDiet(
+  // @Post('processImageAndManageDiet')
+  // public async processImageAndManageDiet(
+  //   @Body() processImageAndManageDietDto: ProcessImageAndManageDietDto,
+  // ) {
+  //   return this.gptService.processImageAndManageDiet(
+  //     processImageAndManageDietDto,
+  //   );
+  // }
+
+  @Post('processImageAndManageDietDB')
+  public async processImageAndManageDietDB(
     @Body() processImageAndManageDietDto: ProcessImageAndManageDietDto,
   ) {
-    return this.gptService.processImageAndManageDiet(
+    return this.gptService.processImageAndManageDietDB(
       processImageAndManageDietDto,
     );
-  }
-
-  @Post('pros-cons-discusser-stream')
-  public async prosConsDiscusserStream(
-    @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
-    @Res() res: Response,
-  ) {
-    const stream =
-      await this.gptService.prosConsDiscusserStream(prosConsDiscusserDto);
-    res.setHeader('Content-Type', 'application/json');
-    res.status(HttpStatus.OK);
-    for await (const chunk of stream) {
-      const piece = chunk.choices[0].delta.content || '';
-      res.write(piece);
-    }
-    res.end();
   }
 
   @Post('translate')
