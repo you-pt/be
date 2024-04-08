@@ -10,6 +10,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
 
 const typeOrmModuleOptions = {
@@ -46,10 +47,10 @@ const typeOrmModuleOptions = {
     }),
     UserModule,
     GptModule,
-    AuthModule,
-    LiveModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    ImageModule,
     DietModule,
+    AuthModule,
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
   ],
   controllers: [AppController],
   providers: [AppService],
