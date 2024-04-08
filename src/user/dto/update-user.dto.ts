@@ -5,5 +5,5 @@ import { Length, IsOptional } from 'class-validator';
 export class UpdateUserDto extends PartialType(CreateUserDto) {
     @IsOptional()
     @Length(8)
-    changePassword: string;
+    changePassword?: string;
 }
