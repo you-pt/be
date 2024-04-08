@@ -10,7 +10,7 @@ import {
 import { Menu } from './menus.entity';
 import { User } from './user.entity';
 
-@Entity({name:"meals"})
+@Entity({ name: 'meals' })
 export class Meal {
   @PrimaryGeneratedColumn()
   mealId: number;
@@ -19,18 +19,18 @@ export class Meal {
   userId: number;
 
   @ManyToOne(() => User, (User) => User.meals, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column()
+  @Column({ nullable: true })
   reportAI: string
 
-  @Column()
+  @Column({ nullable: true })
   report: string
 
   @CreateDateColumn()
-  createdAt: string
+  createdAt: string;
 
-  @OneToMany(() => Menu, menu => menu.meal)
-  menus: Menu[]
+  @OneToMany(() => Menu, (menu) => menu.meal)
+  menus: Menu[];
 }
