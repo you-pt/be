@@ -23,12 +23,21 @@ export class ImageController {
 
   @ApiConsumes('multipart/form-data')
   @ApiBody({
-    description: 'image upload',
-    // type: FileUploadDto,
+    schema: {
+      type: 'object',
+      required: ['file'],
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary',
+        },
+      },
+    },
   })
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return await this.imageService.upload(file)
+    console.log(file);
+    return await this.imageService.upload(file);
   }
 }
