@@ -33,25 +33,43 @@ export class DietService {
     const newMenus = await this.menuRepository.findBy({
       mealId: newMeal.mealId,
     });
-    return { meal: newMeal, menu: newMenus};
+    return { meal: newMeal, menu: newMenus };
   }
 
   async findMenus(userId: number, mealId: number) {
     const menus = await this.dataSource
-        .createQueryBuilder(Menu, "menu")
-        // .select(["*"])
-        .select(["menu.menuId", "menu.mealId", "meal.userId", "menu.name", "menu.kcal"])
-        .leftJoin("menu.meal", "meal", "menu.mealId = meal.mealId")
-        .where("menu.mealId = :mealId", {mealId})
-        .andWhere("meal.userId = :userId", {userId})
-        .getMany()
+      .createQueryBuilder(Menu, 'menu')
+      // .select(["*"])
+      .select([
+        'menu.menuId',
+        'menu.mealId',
+        'meal.userId',
+        'menu.name',
+        'menu.kcal',
+      ])
+      .leftJoin('menu.meal', 'meal', 'menu.mealId = meal.mealId')
+      .where('menu.mealId = :mealId', { mealId })
+      .andWhere('meal.userId = :userId', { userId })
+      .getMany();
     // const menus = await this.menuRepository.findBy({ mealId });
     return menus;
   }
 
   async remove(mealId: number) {
     const deletedMeal = await this.mealRepository.delete({
-      mealId
-    })
+      mealId,
+    });
+  }
+
+  async editReport({ userId, mealId, body }) {
+    const updatedMeal = await this.mealRepository.update(
+      {
+        mealId,
+      },
+      {
+        report: body.report,
+      },
+    );
+    return updatedMeal;
   }
 }

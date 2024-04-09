@@ -6,6 +6,7 @@ import {
   Delete,
   UseGuards,
   Get,
+  Patch,
 } from '@nestjs/common';
 import { DietService } from './diet.service';
 import { CreateDietDto } from './dto/create-diet.dto';
@@ -13,6 +14,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserInfo } from '../user/utils/userInfo.decorator';
 import { User } from '../entities/user.entity';
 import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { RolesGuard } from '../../auth/roles.guard';
+import { Roles } from '../../auth/roles.decorator';
+import { Role } from '../user/types/userRole.type';
 
 @ApiTags('식단 관리 API')
 @Controller('diet')
@@ -65,5 +69,22 @@ export class DietController {
   @Delete(':mealId')
   remove(@Param('mealId') mealId: string) {
     return this.dietService.remove(+mealId);
+  }
+
+  @ApiOperation({ summary: "식단 평가 변경(트레이너만)"})
+  @ApiParam({name: 'mealId', required: true, description: "number"})
+  @ApiBody({schema: {
+    properties: {
+      report: {
+        type: "string",
+        example: "식단 평가 입니다."
+      }
+    }
+  }})
+  @UseGuards(RolesGuard)
+  @Roles(Role.Trainer)
+  @Patch(':mealId')
+  async editReport(@UserInfo() user:User, @Param("mealId") mealId:number, @Body() body){
+    return await this.dietService.editReport({userId: +user.id, mealId, body})
   }
 }
