@@ -1,3 +1,4 @@
+import { LiveModule } from './live/live.module';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -9,6 +10,8 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
 import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
+import { ImageModule } from './image/image.module';
+import { DietModule } from './diet/diet.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -44,14 +47,16 @@ const typeOrmModuleOptions = {
     }),
     UserModule,
     GptModule,
+    ImageModule,
+    DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions)
   ],
   controllers: [AppController],
-  providers: [AppService]
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-      consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

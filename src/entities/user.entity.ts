@@ -15,7 +15,6 @@ import { Message } from './messages.entity';
 import { Schedule } from './schedules.entity';
 import { TrainerInfo } from './trainerInfo.entity';
 
-
 @Index('email', ['email'], { unique: true })
 @Entity({
   name: 'user',
@@ -33,7 +32,7 @@ export class User {
   @Column({ type: 'varchar', select: false, nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   name: string;
 
   @Column({ type: 'enum', enum: Gender, nullable: false })

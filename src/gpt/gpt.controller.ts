@@ -6,7 +6,9 @@ import {
   TranslateDto,
   ProcessImageAndManageDietDto,
 } from './dtos';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags("AI")
 @Controller('gpt')
 export class GptController {
   constructor(private readonly gptService: GptService) {}
