@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Get } from '@nestjs/common';
 import { Response } from 'express';
 import { GptService } from './gpt.service';
 import {
@@ -8,7 +8,7 @@ import {
 } from './dtos';
 import { ApiTags } from '@nestjs/swagger';
 
-@ApiTags("AI")
+@ApiTags('AI')
 @Controller('gpt')
 export class GptController {
   constructor(private readonly gptService: GptService) {}

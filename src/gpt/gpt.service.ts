@@ -9,8 +9,8 @@ import {
 } from './dtos';
 import { FoodItem } from 'src/entities/foodItem.entity';
 import OpenAI from 'openai';
-import * as fs from 'fs';
-import csv from 'csv-parser';
+// import * as fs from 'fs';
+// import csv from 'csv-parser';
 
 @Injectable()
 export class GptService {
