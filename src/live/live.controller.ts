@@ -7,8 +7,10 @@ import {
   Req,
   Res,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { OpenVidu } from 'openvidu-node-client';
 
+@ApiTags("화상 채팅")
 @Controller()
 export class LiveController {
   private readonly OPENVIDU_URL: string = process.env.OPENVIDU_URL;
