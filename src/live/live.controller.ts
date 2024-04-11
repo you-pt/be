@@ -11,10 +11,8 @@ import { OpenVidu } from 'openvidu-node-client';
 
 @Controller()
 export class LiveController {
-  private readonly OPENVIDU_URL: string =
-    process.env.OPENVIDU_URL || 'http://172.22.240.1:4443';
-  private readonly OPENVIDU_SECRET: string =
-    process.env.OPENVIDU_SECRET || 'MY_SECRET';
+  private readonly OPENVIDU_URL: string = process.env.OPENVIDU_URL;
+  private readonly OPENVIDU_SECRET: string = process.env.OPENVIDU_SECRET;
   private readonly openvidu: OpenVidu = new OpenVidu(
     this.OPENVIDU_URL,
     this.OPENVIDU_SECRET,
@@ -24,8 +22,10 @@ export class LiveController {
   async sessions(@Req() req, @Res() res) {
     try {
       const session = await this.openvidu.createSession(req.body);
+
       res.status(HttpStatus.CREATED).send(session.sessionId);
     } catch (error) {
+      console.log(this.OPENVIDU_URL);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     }
   }
