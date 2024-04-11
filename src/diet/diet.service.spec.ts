@@ -4,7 +4,8 @@ import { DataSource, Repository } from 'typeorm';
 import { Meal } from '../entities/meals.entity';
 import { Menu } from '../entities/menus.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { generateMeal, generateMenu } from './test-utils/mockData';
+import { generateMeal, generateMenu, generateMenuDTO } from './test-utils/mockData';
+import { User } from '../entities/user.entity';
 
 const mockDataSource = {
   query: jest.fn(),
@@ -30,6 +31,10 @@ describe('DietService', () => {
           useClass: Repository,
         },
         {
+          provide: getRepositoryToken(User),
+          useClass: Repository,
+        },
+        { 
           provide: DataSource,
           useValue: mockDataSource,
         },
@@ -45,27 +50,44 @@ describe('DietService', () => {
     expect(mealMockRepo).toBeDefined();
     expect(menuMockRepo).toBeDefined();
     expect(DietService).toBeDefined();
+    console.log(DietService);
   });
 
-  /**
-   * 1. mockreSolvedValue 사용해서 결과 값 생성
-   * 2.
-   */
-  test('식단 생성', async () => {
+  test('::::: 식단 생성 :::::', async () => {
     const mealData = generateMeal(1)[0];
     const menuData = generateMenu(2);
-    mealMockRepo.create = jest
+    const menuDTO = generateMenuDTO(2);
+    service.create = jest
       .fn()
-      .mockResolvedValue({ meal: mealData, menu: menuData });
-    expect(mealMockRepo.create).toHaveBeenCalledTimes(1)
-    // expect(mealMockRepo.create).toEqual(
-    //   {
-    //     meal: generateMeal(1)[0],
-    //     menu: generateMenu(2)
-    //   }
-    // )
+      .mockImplementation(async () => ({ meal: mealData, menu: menuData }));
+
+    const result = await service.create(1, menuDTO);
+    expect(service.create).toHaveBeenCalled();
+    expect(service.create).toHaveBeenCalledTimes(1);
+    expect(await service.create(1, menuDTO)).toEqual({
+      meal: generateMeal(1)[0],
+      menu: generateMenu(2),
+    });
+    expect(result['menu']).toHaveLength(2);
   });
-  // test('메뉴 조회', () => {});
-  // test('식단 제거', () => {});
-  // test("[오류] 식단", () => {})
+
+  // test("식단 생성 - userId X", async () => {
+  //   const mealData = generateMeal(1)[0];
+  //   const menuData = generateMenu(2);
+  //   jest.spyOn(service, "create").mockResolvedValue({ meal: mealData, menu: menuData })
+
+  //   expect(service.create).toThrow()
+  // })
+
+  test('::::: 메뉴 조회 :::::', async () => {
+    const menuData = generateMenu(2);
+    service.findMenus = jest.fn().mockImplementation(async () => menuData);
+    const result = await service.findMenus(1, 1);
+
+    expect(service.findMenus).toHaveBeenCalled();
+    expect(service.findMenus).toHaveBeenCalledTimes(1)
+    expect(result).toEqual(menuData);
+    expect(result).toHaveLength(2);
+  });
+
 });

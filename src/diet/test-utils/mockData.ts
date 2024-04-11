@@ -13,6 +13,15 @@ interface Menu {
   kcal: number;
 }
 
+interface MenuType {
+  name: string;
+  kcal: number;
+}
+
+interface MenuDTO {
+  menus: MenuType[];
+}
+
 export const generateMeal = (cycles: number): Meal[] => {
   let result = [];
   for (let i = 1; i <= cycles; i++) {
@@ -28,6 +37,20 @@ export const generateMeal = (cycles: number): Meal[] => {
     ];
   }
   return result;
+};
+
+export const generateMenuDTO = (cycles: number = 1): MenuDTO => {
+  let result = [];
+  for (let i = 1; i <= cycles; i++) {
+    result = [
+      ...result,
+      {
+        name: `메뉴 ${i}`,
+        kcal: `${i}000`,
+      },
+    ];
+    return { menus: result };
+  }
 };
 
 export const generateMenu = (cycles: number = 1): Menu[] => {

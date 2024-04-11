@@ -5,6 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Menu } from '../entities/menus.entity';
 import { Meal } from '../entities/meals.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from '../entities/user.entity';
 
 @Injectable()
 export class DietService {
@@ -14,9 +15,13 @@ export class DietService {
     private readonly menuRepository: Repository<Menu>,
     @InjectRepository(Meal)
     private readonly mealRepository: Repository<Meal>,
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>
   ) {}
 
   async create(id: number, createDietDto: CreateDietDto) {
+    const user = await this.userRepository.findOneBy({id})
+    if (!user) throw {message: "사용자가 없습니다."}
     const newMeal = await this.mealRepository.save({
       userId: id,
       reportAI: null,

@@ -58,9 +58,6 @@ export class DietController {
   @ApiParam({ name: 'mealId', required: true, description: 'number' })
   @Get(':mealId')
   async findMenus(@UserInfo() user: User, @Param("mealId") mealId: number) {
-    console.log(+user.id)
-    // console.log(+mealId)
-    // console.log(+user.id, +mealId)
     return await this.dietService.findMenus(+user.id, +mealId);
   }
 
@@ -81,6 +78,7 @@ export class DietController {
       }
     }
   }})
+
   @UseGuards(RolesGuard)
   @Roles(Role.Trainer)
   @Patch(':mealId')
