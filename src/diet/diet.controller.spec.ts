@@ -8,13 +8,15 @@ describe('DietController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DietController],
-      providers: [DietService],
+      providers: [
+        DietService
+      ],
     }).compile();
 
     controller = module.get<DietController>(DietController);
   });
 
-  it('should be defined', () => {
+  test('should be defined', () => {
     expect(controller).toBeDefined();
   });
 });

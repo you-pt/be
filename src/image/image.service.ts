@@ -13,8 +13,7 @@ export class ImageService {
   async upload(file: Express.Multer.File) {
     const { originalname } = file;
     const bucketName = this.config.get<string>("S3_BUCKET_NAME")
-    console.log(bucketName)
-    await this.uploadS3(file.buffer, bucketName, originalname);
+    return await this.uploadS3(file.buffer, bucketName, originalname);
   }
 
   async uploadS3(file: any, bucket: string, name: any) {
