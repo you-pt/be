@@ -37,7 +37,7 @@ export class ImageController {
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    return await this.imageService.upload(file);
+    const newFile = await this.imageService.upload(file);
+    return {url: newFile["Location"]}
   }
 }
