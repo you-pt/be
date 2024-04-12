@@ -103,7 +103,7 @@ export class GptService {
       url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/text',
       headers: {
         'content-type': 'application/x-www-form-urlencoded',
-        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, // 환경변수로 관리하는 것이 좋습니다
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY,
         'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com',
       },
       data: encodedParams,
