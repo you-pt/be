@@ -9,6 +9,8 @@ import {
 } from './dtos';
 import { FoodItem } from 'src/entities/foodItem.entity';
 import OpenAI from 'openai';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
 // import * as fs from 'fs';
 // import csv from 'csv-parser';
 
@@ -17,6 +19,7 @@ export class GptService {
   constructor(
     @InjectRepository(FoodItem)
     private foodItemRepository: Repository<FoodItem>,
+    private httpService: HttpService,
   ) {}
   private openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -87,6 +90,32 @@ export class GptService {
       prompt,
       lang,
     });
+  }
+
+  public async translateText2({ lang, prompt }: TranslateDto): Promise<string> {
+    const encodedParams = new URLSearchParams();
+    encodedParams.append('from', 'en');
+    encodedParams.append('to', lang);
+    encodedParams.append('text', prompt);
+
+    const options = {
+      method: 'POST',
+      url: 'https://google-translate113.p.rapidapi.com/api/v1/translator/text',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        'X-RapidAPI-Key': process.env.RAPIDAPI_KEY, // 환경변수로 관리하는 것이 좋습니다
+        'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com',
+      },
+      data: encodedParams,
+    };
+
+    try {
+      const response = await firstValueFrom(this.httpService.request(options));
+      return response.data;
+    } catch (error) {
+      console.error('Error in translation:', error);
+      throw error;
+    }
   }
 
   // csv파일을 db에 올린 흔적... -> 다신 안씀 ㅋㅋㅋㅋㅋ
