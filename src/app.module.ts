@@ -50,7 +50,7 @@ const typeOrmModuleOptions = {
     ImageModule,
     DietModule,
     AuthModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
   ],
   controllers: [AppController],
   providers: [AppService],
