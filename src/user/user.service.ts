@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -15,8 +20,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly jwtService: JwtService
-  ) { }
+    private readonly jwtService: JwtService,
+  ) {}
 
   async register(createUserDto: CreateUserDto) {
     const existingUser = await this.findByEmail(createUserDto.email);
@@ -29,9 +34,7 @@ export class UserService {
     const existingNickname = await this.findByNickname(createUserDto.nickname);
 
     if (existingNickname) {
-      throw new ConflictException(
-        '중복된 닉네임입니다!',
-      );
+      throw new ConflictException('중복된 닉네임입니다!');
     }
 
     const hashedPassword = await hash(createUserDto.password, 10);
@@ -66,7 +69,7 @@ export class UserService {
         select: { email: true, nickname: true, role: true },
         take: +perPage,
         skip: (page - 1) * perPage,
-      })
+      });
     }
 
     return await this.userRepository.find({
@@ -74,13 +77,13 @@ export class UserService {
       select: { email: true, nickname: true, role: true },
       take: +perPage,
       skip: (page - 1) * perPage,
-    })
+    });
   }
 
   async findOne(id: number) {
     return await this.userRepository.findOne({
       where: { id },
-      select: { email: true, name: true, nickname: true, gender: true, phone: true, birth: true, role: true },
+      select: { email: true, nickname: true, role: true },
     });
   }
 
@@ -96,27 +99,33 @@ export class UserService {
   async updateUser(id: number, updateUserDto: UpdateUserDto, user: User) {
     const checkUser = await this.userRepository.findOne({
       where: { id: user.id },
-      select: { password: true }
+      select: { password: true },
     });
 
     if (!checkUser) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
-    if (id !== user.id) // || checkUser.role !== admin
+    if (id !== user.id)
+      // || checkUser.role !== admin
       throw new UnauthorizedException('본인의 계정만 접근 가능합니다.');
 
-    if (!await compare(updateUserDto.password, checkUser.password)) {
+    if (!(await compare(updateUserDto.password, checkUser.password))) {
       throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
-    await this.userRepository.update({ id }, {
-      name: updateUserDto.name,
-      nickname: updateUserDto.nickname,
-      phone: updateUserDto.phone,
-    });
+    await this.userRepository.update(
+      { id },
+      {
+        email: updateUserDto.email,
+        nickname: updateUserDto.nickname,
+      },
+    );
 
     if (updateUserDto.changePassword)
-      await this.userRepository.update({ id }, { password: await hash(updateUserDto.changePassword, 10) });
+      await this.userRepository.update(
+        { id },
+        { password: await hash(updateUserDto.changePassword, 10) },
+      );
 
     return await this.userRepository.findOneBy({ id });
   }
@@ -128,7 +137,8 @@ export class UserService {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
-    if (id !== user.id) // || checkUser.role !== admin
+    if (id !== user.id)
+      // || checkUser.role !== admin
       throw new UnauthorizedException('본인의 계정만 접근 가능합니다.');
 
     await this.userRepository.delete({ id });

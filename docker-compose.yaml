@@ -33,7 +33,7 @@ services:
       - 9229:9229
     # Run in Debug Mode: npm run start:debug --> Don't forget to start your vscode debugger!
     # Run in dev Mode: npm run start:dev
-    command: bash -c "npm install && npm run start:dev"
+    command: npm run start:dev
   fluentd:
     # image: registry.cn-shenzhen.aliyuncs.com/cnregistry/fluentd-es:v1.16.2-debian-1.1
     platform: linux/amd64

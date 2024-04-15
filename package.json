@@ -20,7 +20,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.549.0",
     "@dynatech-corp/nestjs-fluentd-logger": "^0.1.8",
+    "@golevelup/nestjs-rabbitmq": "^5.1.0",
+    "@google-cloud/translate": "^8.2.0",
     "@nestjs/axios": "^3.0.2",
     "@nestjs/cache-manager": "^2.2.2",
     "@nestjs/cli": "^10.0.0",
@@ -40,6 +43,7 @@
     "@types/passport-jwt": "^4.0.1",
     "artillery": "^2.0.9",
     "aws-sdk": "^2.1594.0",
+    "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "cache-manager": "^5.4.0",
     "class-transformer": "^0.5.1",

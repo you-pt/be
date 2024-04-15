@@ -6,6 +6,7 @@ import { Meal } from '../entities/meals.entity';
 import { Menu } from '../entities/menus.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { User } from '../entities/user.entity';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { ConfigService } from '@nestjs/config';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([Meal, Menu]),
+    TypeOrmModule.forFeature([Meal, Menu, User]),
   ],
   controllers: [DietController],
   providers: [DietService],

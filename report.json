@@ -1,0 +1,884 @@
+{
+  "aggregate": {
+    "counters": {
+      "vusers.created_by_name.0": 60,
+      "vusers.created": 60,
+      "http.requests": 60,
+      "http.codes.201": 8,
+      "http.responses": 15,
+      "http.downloaded_bytes": 9694,
+      "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.201": 8,
+      "vusers.failed": 45,
+      "vusers.completed": 15,
+      "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 45,
+      "errors.ETIMEDOUT": 45,
+      "http.codes.500": 7,
+      "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.500": 7
+    },
+    "rates": {
+      "http.request_rate": 1
+    },
+    "firstCounterAt": 1712574992743,
+    "firstHistogramAt": 1712574997217,
+    "lastCounterAt": 1712575062194,
+    "lastHistogramAt": 1712575061007,
+    "firstMetricAt": 1712574992743,
+    "lastMetricAt": 1712575062194,
+    "period": 1712575060000,
+    "summaries": {
+      "http.response_time": {
+        "min": 3468,
+        "max": 9829,
+        "count": 15,
+        "mean": 7685.4,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      },
+      "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+        "min": 3468,
+        "max": 9829,
+        "count": 15,
+        "mean": 7685.4,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      },
+      "vusers.session_length": {
+        "min": 3476.9,
+        "max": 9831.1,
+        "count": 15,
+        "mean": 7689.8,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      }
+    },
+    "histograms": {
+      "http.response_time": {
+        "min": 3468,
+        "max": 9829,
+        "count": 15,
+        "mean": 7685.4,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      },
+      "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+        "min": 3468,
+        "max": 9829,
+        "count": 15,
+        "mean": 7685.4,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      },
+      "vusers.session_length": {
+        "min": 3476.9,
+        "max": 9831.1,
+        "count": 15,
+        "mean": 7689.8,
+        "p50": 8352,
+        "median": 8352,
+        "p75": 9047.6,
+        "p90": 9607.1,
+        "p95": 9607.1,
+        "p99": 9607.1,
+        "p999": 9607.1
+      }
+    }
+  },
+  "intermediate": [
+    {
+      "counters": {
+        "vusers.created_by_name.0": 8,
+        "vusers.created": 8,
+        "http.requests": 8,
+        "http.codes.201": 3,
+        "http.responses": 3,
+        "http.downloaded_bytes": 2709,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.201": 3,
+        "vusers.failed": 0,
+        "vusers.completed": 3
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712574992743,
+      "firstHistogramAt": 1712574997217,
+      "lastCounterAt": 1712574999954,
+      "lastHistogramAt": 1712574999954,
+      "firstMetricAt": 1712574992743,
+      "lastMetricAt": 1712574999954,
+      "period": "1712574990000",
+      "summaries": {
+        "http.response_time": {
+          "min": 3468,
+          "max": 5201,
+          "count": 3,
+          "mean": 4452.3,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 3468,
+          "max": 5201,
+          "count": 3,
+          "mean": 4452.3,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "vusers.session_length": {
+          "min": 3476.9,
+          "max": 5204.2,
+          "count": 3,
+          "mean": 4463.8,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 3468,
+          "max": 5201,
+          "count": 3,
+          "mean": 4452.3,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 3468,
+          "max": 5201,
+          "count": 3,
+          "mean": 4452.3,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "vusers.session_length": {
+          "min": 3476.9,
+          "max": 5204.2,
+          "count": 3,
+          "mean": 4463.8,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.201": 3,
+        "http.responses": 3,
+        "http.downloaded_bytes": 4367,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.201": 3,
+        "vusers.failed": 2,
+        "vusers.completed": 3,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 2,
+        "errors.ETIMEDOUT": 2
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575000821,
+      "firstHistogramAt": 1712575005332,
+      "lastCounterAt": 1712575009889,
+      "lastHistogramAt": 1712575006091,
+      "firstMetricAt": 1712575000821,
+      "lastMetricAt": 1712575009889,
+      "period": "1712575000000",
+      "summaries": {
+        "http.response_time": {
+          "min": 8297,
+          "max": 9565,
+          "count": 3,
+          "mean": 8850.7,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8297,
+          "max": 9565,
+          "count": 3,
+          "mean": 8850.7,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        },
+        "vusers.session_length": {
+          "min": 8299.6,
+          "max": 9568.9,
+          "count": 3,
+          "mean": 8853.6,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 8297,
+          "max": 9565,
+          "count": 3,
+          "mean": 8850.7,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8297,
+          "max": 9565,
+          "count": 3,
+          "mean": 8850.7,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        },
+        "vusers.session_length": {
+          "min": 8299.6,
+          "max": 9568.9,
+          "count": 3,
+          "mean": 8853.6,
+          "p50": 8692.8,
+          "median": 8692.8,
+          "p75": 8692.8,
+          "p90": 8692.8,
+          "p95": 8692.8,
+          "p99": 8692.8,
+          "p999": 8692.8
+        }
+      }
+    },
+    {
+      "counters": {
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 8,
+        "errors.ETIMEDOUT": 8,
+        "vusers.failed": 8,
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "http.codes.500": 2,
+        "http.responses": 2,
+        "http.downloaded_bytes": 104,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.500": 2,
+        "vusers.completed": 2
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575010837,
+      "firstHistogramAt": 1712575013370,
+      "lastCounterAt": 1712575019965,
+      "lastHistogramAt": 1712575013405,
+      "firstMetricAt": 1712575010837,
+      "lastMetricAt": 1712575019965,
+      "period": "1712575010000",
+      "summaries": {
+        "http.response_time": {
+          "min": 8515,
+          "max": 9556,
+          "count": 2,
+          "mean": 9035.5,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8515,
+          "max": 9556,
+          "count": 2,
+          "mean": 9035.5,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        },
+        "vusers.session_length": {
+          "min": 8517.5,
+          "max": 9560,
+          "count": 2,
+          "mean": 9038.7,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 8515,
+          "max": 9556,
+          "count": 2,
+          "mean": 9035.5,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8515,
+          "max": 9556,
+          "count": 2,
+          "mean": 9035.5,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        },
+        "vusers.session_length": {
+          "min": 8517.5,
+          "max": 9560,
+          "count": 2,
+          "mean": 9038.7,
+          "p50": 8520.7,
+          "median": 8520.7,
+          "p75": 8520.7,
+          "p90": 8520.7,
+          "p95": 8520.7,
+          "p99": 8520.7,
+          "p999": 8520.7
+        }
+      }
+    },
+    {
+      "counters": {
+        "http.codes.201": 1,
+        "http.responses": 3,
+        "http.downloaded_bytes": 1562,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.201": 1,
+        "vusers.failed": 7,
+        "vusers.completed": 3,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 7,
+        "errors.ETIMEDOUT": 7,
+        "vusers.created_by_name.0": 9,
+        "vusers.created": 9,
+        "http.requests": 9,
+        "http.codes.500": 2,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.500": 2
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575020688,
+      "firstHistogramAt": 1712575020688,
+      "lastCounterAt": 1712575029023,
+      "lastHistogramAt": 1712575028649,
+      "firstMetricAt": 1712575020688,
+      "lastMetricAt": 1712575029023,
+      "period": "1712575020000",
+      "summaries": {
+        "http.response_time": {
+          "min": 7789,
+          "max": 9695,
+          "count": 3,
+          "mean": 8605.3,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 7789,
+          "max": 9695,
+          "count": 3,
+          "mean": 8605.3,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        },
+        "vusers.session_length": {
+          "min": 7791.4,
+          "max": 9698.4,
+          "count": 3,
+          "mean": 8608.1,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 7789,
+          "max": 9695,
+          "count": 3,
+          "mean": 8605.3,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 7789,
+          "max": 9695,
+          "count": 3,
+          "mean": 8605.3,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        },
+        "vusers.session_length": {
+          "min": 7791.4,
+          "max": 9698.4,
+          "count": 3,
+          "mean": 8608.1,
+          "p50": 8352,
+          "median": 8352,
+          "p75": 8352,
+          "p90": 8352,
+          "p95": 8352,
+          "p99": 8352,
+          "p999": 8352
+        }
+      }
+    },
+    {
+      "counters": {
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 8,
+        "errors.ETIMEDOUT": 8,
+        "vusers.failed": 8,
+        "http.codes.201": 1,
+        "http.responses": 1,
+        "http.downloaded_bytes": 796,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.201": 1,
+        "vusers.completed": 1
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575030036,
+      "firstHistogramAt": 1712575032663,
+      "lastCounterAt": 1712575039102,
+      "lastHistogramAt": 1712575032663,
+      "firstMetricAt": 1712575030036,
+      "lastMetricAt": 1712575039102,
+      "period": "1712575030000",
+      "summaries": {
+        "http.response_time": {
+          "min": 4640,
+          "max": 4640,
+          "count": 1,
+          "mean": 4640,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 4640,
+          "max": 4640,
+          "count": 1,
+          "mean": 4640,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "vusers.session_length": {
+          "min": 4641.8,
+          "max": 4641.8,
+          "count": 1,
+          "mean": 4641.8,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 4640,
+          "max": 4640,
+          "count": 1,
+          "mean": 4640,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 4640,
+          "max": 4640,
+          "count": 1,
+          "mean": 4640,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        },
+        "vusers.session_length": {
+          "min": 4641.8,
+          "max": 4641.8,
+          "count": 1,
+          "mean": 4641.8,
+          "p50": 4676.2,
+          "median": 4676.2,
+          "p75": 4676.2,
+          "p90": 4676.2,
+          "p95": 4676.2,
+          "p99": 4676.2,
+          "p999": 4676.2
+        }
+      }
+    },
+    {
+      "counters": {
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 10,
+        "errors.ETIMEDOUT": 10,
+        "vusers.failed": 10,
+        "vusers.created_by_name.0": 10,
+        "vusers.created": 10,
+        "http.requests": 10
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575040045,
+      "lastCounterAt": 1712575049164,
+      "firstMetricAt": 1712575040045,
+      "lastMetricAt": 1712575049164,
+      "period": "1712575040000",
+      "summaries": {},
+      "histograms": {}
+    },
+    {
+      "counters": {
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 8,
+        "errors.ETIMEDOUT": 8,
+        "vusers.failed": 8,
+        "vusers.created_by_name.0": 3,
+        "vusers.created": 3,
+        "http.requests": 3,
+        "http.codes.500": 2,
+        "http.responses": 2,
+        "http.downloaded_bytes": 104,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.500": 2,
+        "vusers.completed": 2
+      },
+      "rates": {
+        "http.request_rate": 1
+      },
+      "http.request_rate": null,
+      "firstCounterAt": 1712575050110,
+      "firstHistogramAt": 1712575052130,
+      "lastCounterAt": 1712575059171,
+      "lastHistogramAt": 1712575052135,
+      "firstMetricAt": 1712575050110,
+      "lastMetricAt": 1712575059171,
+      "period": "1712575050000",
+      "summaries": {
+        "http.response_time": {
+          "min": 8003,
+          "max": 9013,
+          "count": 2,
+          "mean": 8508,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8003,
+          "max": 9013,
+          "count": 2,
+          "mean": 8508,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        },
+        "vusers.session_length": {
+          "min": 8004.4,
+          "max": 9015.2,
+          "count": 2,
+          "mean": 8509.8,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 8003,
+          "max": 9013,
+          "count": 2,
+          "mean": 8508,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 8003,
+          "max": 9013,
+          "count": 2,
+          "mean": 8508,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        },
+        "vusers.session_length": {
+          "min": 8004.4,
+          "max": 9015.2,
+          "count": 2,
+          "mean": 8509.8,
+          "p50": 8024.5,
+          "median": 8024.5,
+          "p75": 8024.5,
+          "p90": 8024.5,
+          "p95": 8024.5,
+          "p99": 8024.5,
+          "p999": 8024.5
+        }
+      }
+    },
+    {
+      "counters": {
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.errors.ETIMEDOUT": 2,
+        "errors.ETIMEDOUT": 2,
+        "vusers.failed": 2,
+        "http.codes.500": 1,
+        "http.responses": 1,
+        "http.downloaded_bytes": 52,
+        "plugins.metrics-by-endpoint./gpt/dietManagerWithDB.codes.500": 1,
+        "vusers.completed": 1
+      },
+      "rates": {},
+      "firstCounterAt": 1712575060180,
+      "firstHistogramAt": 1712575061006,
+      "lastCounterAt": 1712575062194,
+      "lastHistogramAt": 1712575061007,
+      "firstMetricAt": 1712575060180,
+      "lastMetricAt": 1712575062194,
+      "period": "1712575060000",
+      "summaries": {
+        "http.response_time": {
+          "min": 9829,
+          "max": 9829,
+          "count": 1,
+          "mean": 9829,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 9829,
+          "max": 9829,
+          "count": 1,
+          "mean": 9829,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        },
+        "vusers.session_length": {
+          "min": 9831.1,
+          "max": 9831.1,
+          "count": 1,
+          "mean": 9831.1,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        }
+      },
+      "histograms": {
+        "http.response_time": {
+          "min": 9829,
+          "max": 9829,
+          "count": 1,
+          "mean": 9829,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        },
+        "plugins.metrics-by-endpoint.response_time./gpt/dietManagerWithDB": {
+          "min": 9829,
+          "max": 9829,
+          "count": 1,
+          "mean": 9829,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        },
+        "vusers.session_length": {
+          "min": 9831.1,
+          "max": 9831.1,
+          "count": 1,
+          "mean": 9831.1,
+          "p50": 9801.2,
+          "median": 9801.2,
+          "p75": 9801.2,
+          "p90": 9801.2,
+          "p95": 9801.2,
+          "p99": 9801.2,
+          "p999": 9801.2
+        }
+      }
+    }
+  ]
+}
