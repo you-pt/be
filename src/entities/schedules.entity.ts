@@ -19,15 +19,22 @@ export class Schedule {
   @Column()
   userId: number;
 
+  @Column()
+  trainerId: number;
+
   @ManyToOne(() => User, (user) => user.schedules)
-  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
+  @JoinColumn({ referencedColumnName: 'id' })
   user: User;
 
-  @Column()
-  ptDate: Date;
+  @ManyToOne(() => User, (trainer) => trainer.schedules)
+  @JoinColumn({ referencedColumnName: 'id' })
+  trainer: User;
 
   @Column()
-  ptTime: Date;
+  ptDate: string;
+
+  @Column()
+  ptTime: string;
 
   @Column()
   content: string;
