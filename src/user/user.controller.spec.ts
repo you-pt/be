@@ -6,7 +6,7 @@ import { Role } from './types/userRole.type';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { response, Response } from 'express';
+import { Response } from 'express';
 import { TrainerInfo } from '../entities/trainerInfo.entity';
 
 const mockUserService = {
@@ -21,12 +21,10 @@ const mockUserService = {
 
 const mockJwtService = {
   sign: jest.fn(),
-  secret: jest.fn(),
 };
 
 const mockResponse = (): Response => {
   const res: Partial<Response> = {};
-  res.status = jest.fn().mockReturnValue(res);
   res.cookie = jest.fn().mockReturnValue(res);
   return res as Response
 }

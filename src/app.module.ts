@@ -1,5 +1,5 @@
 import { LiveModule } from './live/live.module';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GptModule } from './gpt/gpt.module';
@@ -12,6 +12,7 @@ import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
+import { ScheduleModule } from './schedule/schedule.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -50,10 +51,11 @@ const typeOrmModuleOptions = {
     ImageModule,
     DietModule,
     AuthModule,
-    TypeOrmModule.forRootAsync(typeOrmModuleOptions)
+    TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    ScheduleModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, Logger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
