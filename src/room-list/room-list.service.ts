@@ -30,15 +30,18 @@ export class RoomListService {
   }
 
   async findRoomParticipants(roomName: string) {
+    if (roomName === '' || !roomName) {
+      throw new NotFoundException('방 제목을 입력해주세요.');
+    }
     const roomParticipants = await this.redisService.client.smembers(roomName);
     return roomParticipants;
   }
 
   async deleteParticipant(roomName: string, participant: string) {
-    if (!roomName || !participant){
-      throw new NotFoundException("존재하지 않는 방 또는 사용자입니다.")
+    if (!roomName || !participant) {
+      throw new NotFoundException('존재하지 않는 방 또는 사용자입니다.');
     }
-    const result = await this.redisService.client.srem(roomName, participant);
-    return {message: `${participant} 사용자가 방을 나갔습니다.`}
+    await this.redisService.client.srem(roomName, participant);
+    return { message: `${participant} 사용자가 방을 나갔습니다.` };
   }
 }
