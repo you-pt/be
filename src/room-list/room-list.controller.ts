@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post } from '@nestjs/common';
 import { RoomListService } from './room-list.service';
 import { CreateRoomListDto } from './dto/create-room-list.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -11,12 +11,19 @@ export class RoomListController {
   ){}
 
   @Post()
-  async addRoomList(@Body() session: CreateRoomListDto){
-    return await this.roomListService.create(session);
+  async addRoomList(@Body() room: CreateRoomListDto){
+    return await this.roomListService.create(room);
   }
 
   @Get()
   async findRoomList(){
     return await this.roomListService.findRoomList()
+  }
+
+  @Delete()
+  async deleteRoomParticipant(@Body() body:{sessionId: string, participant: string}){
+    const {sessionId, participant} = body
+    console.log(body)
+    return await this.roomListService.deleteParticipant(sessionId, participant)
   }
 }
