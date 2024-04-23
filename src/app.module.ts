@@ -12,6 +12,8 @@ import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
+// import { RedisModule } from '../redis/redis.module';
+import { EventsModule } from './streamList/streamList.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -51,6 +53,9 @@ const typeOrmModuleOptions = {
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    LiveModule,
+    EventsModule,
+    // RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

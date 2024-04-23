@@ -6,11 +6,13 @@ import {
   Post,
   Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 import { OpenVidu } from 'openvidu-node-client';
 
-@ApiTags("화상 채팅")
+@ApiTags('화상 채팅')
 @Controller()
 export class LiveController {
   private readonly OPENVIDU_URL: string = process.env.OPENVIDU_URL;
