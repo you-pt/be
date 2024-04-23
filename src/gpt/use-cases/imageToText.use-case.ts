@@ -12,14 +12,14 @@ export const imageToText = async (openai: OpenAI, { prompt }: Options) => {
         content: [
           {
             type: 'text',
-            text: `Please tell me the food in the image after discriminating it.
+            text: `Please identify the food in the image.
 Do the same for images with multiple foods.
-I just want a brief description of the food's name and contents.
+I just want a description of the food's name and contents.
 Don't say anything else.
 Please tell me about 60 tokens per food.
 You don't have to use up to the maximum token.
 Please refer to the following example.
-#####formality #####
+##example##
 Menu: Pizza, with some toppings on it.
 Menu: It looks like oven pasta, tomato pasta.
 Menu: Oven chicken, it looks less greasy.`,

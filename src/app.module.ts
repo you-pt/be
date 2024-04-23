@@ -13,6 +13,8 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RoomListModule } from './room-list/room-list.module';
 
 const typeOrmModuleOptions = {
@@ -53,11 +55,25 @@ const typeOrmModuleOptions = {
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    ScheduleModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 1000,
+        limit: 3,
+      },
+    ]),
     RoomListModule,
     LiveModule,
   ],
   controllers: [AppController],
-  providers: [AppService, Logger],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -13,7 +13,7 @@ export const translateUseCase = async (
     messages: [
       {
         role: 'system',
-        content: `Traduce el siguiente texto al idioma ${lang}:${prompt}`,
+        content: `번역 해줘... ${lang}:${prompt}`,
       },
     ],
     model: 'gpt-3.5-turbo',
