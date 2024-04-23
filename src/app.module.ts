@@ -15,6 +15,7 @@ import { DietModule } from './diet/diet.module';
 import { ScheduleModule } from './schedule/schedule.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { RoomListModule } from './room-list/room-list.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -61,6 +62,8 @@ const typeOrmModuleOptions = {
         limit: 3,
       },
     ]),
+    RoomListModule,
+    LiveModule,
   ],
   controllers: [AppController],
   providers: [
