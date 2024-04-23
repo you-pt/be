@@ -23,7 +23,6 @@ export class RoomListController {
   @Delete()
   async deleteRoomParticipant(@Body() body:{sessionId: string, participant: string}){
     const {sessionId, participant} = body
-    console.log(body)
     return await this.roomListService.deleteParticipant(sessionId, participant)
   }
 }

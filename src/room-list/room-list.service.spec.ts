@@ -82,7 +82,6 @@ describe('RoomListService', () => {
       providers: [
         RoomListService,
         { provide: RedisService, useValue: mockRedisService },
-        // RedisService,
         {
           provide: ConfigService,
           useValue: mockConfigService,

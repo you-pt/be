@@ -4,11 +4,22 @@ import { UpdateRoomListDto } from './dto/update-room-list.dto';
 import { RedisService } from './redis/redis.provider';
 import { RoboMaker } from 'aws-sdk';
 
+export interface createReturn {
+  message: string
+}
+
+export interface findRoomListReturn {
+  sessionName: string,
+  participantNumber: number
+}
+
+export type findRoomParticipantsReturn = string[]
+
 @Injectable()
 export class RoomListService {
   constructor(private readonly redisService: RedisService) {}
 
-  async create(room: CreateRoomListDto) {
+  async create (room: CreateRoomListDto): Promise<createReturn> {
     const { sessionId, participant, subscribers } = room;
     if (!sessionId || !participant) {
       throw new NotFoundException('데이터가 잘못되었습니다');
@@ -17,10 +28,10 @@ export class RoomListService {
     return { message: '데이터를 저장했습니다.' };
   }
 
-  async findRoomList() {
+  async findRoomList(): Promise<findRoomListReturn[]> {
     const roomList: string[] = await this.redisService.client.keys('*');
     return Promise.all(
-      roomList.map(async (roomName) => {
+      roomList.map(async (roomName): Promise<findRoomListReturn> => {
         const roomParticipants: string[] =
           await this.findRoomParticipants(roomName);
         const roomUserNumber: number = roomParticipants.length;
@@ -29,7 +40,7 @@ export class RoomListService {
     );
   }
 
-  async findRoomParticipants(roomName: string) {
+  async findRoomParticipants(roomName: string): Promise<findRoomParticipantsReturn> {
     if (roomName === '' || !roomName) {
       throw new NotFoundException('방 제목을 입력해주세요.');
     }
