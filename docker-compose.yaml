@@ -67,21 +67,33 @@ services:
     environment:
       ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
   mysql:
-      image: mysql:8.0
-      container_name: mysql-youpt
-      ports:
-        - 3306:3306 # HOST:CONTAINER
-      environment:
-        MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-        MYSQL_DATABASE: ${DB_NAME}
-        TZ: Asia/Seoul
-      # 메모리를 파일처럼 사용할 수 있는 시스템
-      tmpfs:
-        - /var/lib/mysql
-      restart: unless-stopped
-      command:
-        - --character-set-server=utf8mb4
-        - --default-authentication-plugin=mysql_native_password
-        - --collation-server=utf8mb4_unicode_ci
-      extra_hosts:
-        - "host.docker.internal:172.17.0.1"
+    image: mysql:8.0
+    container_name: mysql-youpt
+    ports:
+      - 3306:3306 # HOST:CONTAINER
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      TZ: Asia/Seoul
+    # 메모리를 파일처럼 사용할 수 있는 시스템
+    tmpfs:
+      - /var/lib/mysql
+    restart: unless-stopped
+    command:
+      - --character-set-server=utf8mb4
+      - --default-authentication-plugin=mysql_native_password
+      - --collation-server=utf8mb4_unicode_ci
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+  redis:
+    image: redis
+    container_name: youpt_redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./redis/data:/data
+    labels:
+      - 'name=redis'
+      - 'mode=standalone'
+    restart: always
+    command: redis-server --requirepass redispassword

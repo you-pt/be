@@ -13,6 +13,7 @@ import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
 import { ScheduleModule } from './schedule/schedule.module';
+import { RoomListModule } from './room-list/room-list.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -52,7 +53,8 @@ const typeOrmModuleOptions = {
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
-    ScheduleModule
+    RoomListModule,
+    LiveModule,
   ],
   controllers: [AppController],
   providers: [AppService, Logger],
