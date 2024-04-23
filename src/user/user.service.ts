@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginDto } from './dto/login.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -15,7 +20,7 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
-    private readonly jwtService: JwtService
+    private readonly jwtService: JwtService,
   ) {}
 
   async register(createUserDto: CreateUserDto) {
@@ -29,9 +34,7 @@ export class UserService {
     const existingNickname = await this.findByNickname(createUserDto.nickname);
 
     if (existingNickname) {
-      throw new ConflictException(
-        '중복된 닉네임입니다!',
-      );
+      throw new ConflictException('중복된 닉네임입니다!');
     }
 
     const hashedPassword = await hash(createUserDto.password, 10);
@@ -39,8 +42,6 @@ export class UserService {
       ...createUserDto,
       password: hashedPassword,
     });
-
-    return newUser;
   }
 
   async login(loginDto: LoginDto) {
@@ -63,33 +64,33 @@ export class UserService {
   }
 
   async findAll(role: Role, page: number, perPage: number) {
-    if(role !== 'trainer' && role !== 'user') {
+    if (role !== 'trainer' && role !== 'user') {
       return await this.userRepository.find({
-        select : {email: true, nickname: true, role: true},
+        select: { email: true, nickname: true, role: true },
         take: +perPage,
         skip: (page - 1) * perPage,
-      })
+      });
     }
 
     return await this.userRepository.find({
-      where: {role},
-      select: {email: true, nickname: true, role: true},
+      where: { role },
+      select: { email: true, nickname: true, role: true },
       take: +perPage,
       skip: (page - 1) * perPage,
-    })
+    });
   }
 
   async findOne(id: number) {
     return await this.userRepository.findOne({
-      where: {id},
-      select: {email: true, nickname: true, role: true}
+      where: { id },
+      select: { email: true, nickname: true, role: true },
     });
   }
 
   async findTrainer(page: number, perPage: number) {
     return await this.userRepository.find({
-      where: {role: Role.Trainer},
-      select: {email: true, nickname: true, role: true},
+      where: { role: Role.Trainer },
+      select: { email: true, nickname: true, role: true },
       take: +perPage,
       skip: (page - 1) * perPage,
     });
@@ -97,29 +98,36 @@ export class UserService {
 
   async updateUser(id: number, updateUserDto: UpdateUserDto, user: User) {
     const checkUser = await this.userRepository.findOne({
-      where : {id: user.id},
-      select : {password : true}
+      where: { id: user.id },
+      select: { password: true },
     });
 
     if (!checkUser) {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
-    if(id !== user.id) // || checkUser.role !== admin
-    throw new UnauthorizedException('본인의 계정만 접근 가능합니다.');
+    if (id !== user.id)
+      // || checkUser.role !== admin
+      throw new UnauthorizedException('본인의 계정만 접근 가능합니다.');
 
-    if (!await compare(updateUserDto.password, checkUser.password)) {
+    if (!(await compare(updateUserDto.password, checkUser.password))) {
       throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
-    await this.userRepository.update({id}, {
-      email: updateUserDto.email, 
-      nickname: updateUserDto.nickname,
-    });
+    await this.userRepository.update(
+      { id },
+      {
+        email: updateUserDto.email,
+        nickname: updateUserDto.nickname,
+      },
+    );
 
-    if(updateUserDto.changePassword)
-      await this.userRepository.update({id}, {password: await hash(updateUserDto.changePassword, 10)});
+    if (updateUserDto.changePassword)
+      await this.userRepository.update(
+        { id },
+        { password: await hash(updateUserDto.changePassword, 10) },
+      );
 
-    return await this.userRepository.findOneBy({id});
+    return await this.userRepository.findOneBy({ id });
   }
 
   async deleteUser(id: number, user: User) {
@@ -129,12 +137,13 @@ export class UserService {
       throw new NotFoundException('사용자를 찾을 수 없습니다.');
     }
 
-    if(id !== user.id) // || checkUser.role !== admin
+    if (id !== user.id)
+      // || checkUser.role !== admin
       throw new UnauthorizedException('본인의 계정만 접근 가능합니다.');
 
-    await this.userRepository.delete({id});
+    await this.userRepository.delete({ id });
 
-    return {message: '삭제 완료!'};
+    return { message: '삭제 완료!' };
   }
 
   async findByEmail(email: string) {

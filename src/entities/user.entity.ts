@@ -59,7 +59,7 @@ export class User {
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  @OneToMany(() => Schedule, (schedule) => schedule.user)
+  @OneToMany(() => Schedule, (schedule) => {schedule.user, schedule.trainer})
   schedules: Schedule[];
 
   @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {
