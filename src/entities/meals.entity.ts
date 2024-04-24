@@ -22,11 +22,11 @@ export class Meal {
   @JoinColumn({ name: 'user_id', referencedColumnName: 'id' })
   user: User;
 
-  @Column({ nullable: true })
-  reportAI: string
+  @Column('json')
+  reportAI: any;
 
   @Column({ nullable: true })
-  report: string
+  report: string;
 
   @CreateDateColumn()
   createdAt: string;

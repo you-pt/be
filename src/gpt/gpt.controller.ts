@@ -4,19 +4,24 @@ import {
   // HttpStatus,
   UseInterceptors,
   Post,
+  UseGuards,
   // Res,
   // Get,
 } from '@nestjs/common';
 // import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 import { GptService } from './gpt.service';
+import { User } from 'src/entities/user.entity';
 import {
   ProsConsDiscusserDto,
   TranslateDto,
   ProcessImageAndManageDietDto,
+  SaveResultDto,
 } from './dtos';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { TimeoutInterceptor } from 'utils/timeout.intercepter';
+import { UserInfo } from 'src/user/utils/userInfo.decorator';
 
 @ApiTags('AI')
 @Controller('gpt')
@@ -38,7 +43,10 @@ export class GptController {
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('imageToText')
   @UseInterceptors(TimeoutInterceptor)
-  public async imageToText(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
+  public async imageToText(
+    @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
+    @UserInfo() user: User,
+  ) {
     return this.gptService.imageToText(prosConsDiscusserDto);
   }
 
@@ -116,6 +124,21 @@ export class GptController {
   @UseInterceptors(TimeoutInterceptor)
   translateText2(@Body() translateDto: TranslateDto) {
     return this.gptService.translateText(translateDto);
+  }
+
+  @Post('saveMeal')
+  @UseGuards(AuthGuard('jwt'))
+  public async saveMealResult(
+    @Body() saveResultDto: SaveResultDto,
+    @UserInfo() user: User,
+  ): Promise<any> {
+    const { reportAI, report } = saveResultDto;
+    const savedMeal = await this.gptService.saveMealResult(
+      user.id,
+      reportAI,
+      report,
+    );
+    return { status: 'success', data: savedMeal };
   }
 
   // DB에 csv파일 내용 올리는 함수
