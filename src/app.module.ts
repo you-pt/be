@@ -12,10 +12,11 @@ import { AuthModule } from '../auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
-import { ScheduleModule } from './schedule/schedule.module';
+import { SchedulesModule } from './schedule/schedule.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RoomListModule } from './room-list/room-list.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -56,7 +57,7 @@ const typeOrmModuleOptions = {
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
-    ScheduleModule,
+    SchedulesModule,
     ThrottlerModule.forRoot([
       {
         ttl: 1000,
