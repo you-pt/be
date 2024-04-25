@@ -8,6 +8,7 @@ import {
   TranslateDto,
 } from './dtos';
 import { FoodItem } from 'src/entities/foodItem.entity';
+import { Meal } from 'src/entities/meals.entity';
 import OpenAI from 'openai';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -19,6 +20,8 @@ export class GptService {
   constructor(
     @InjectRepository(FoodItem)
     private foodItemRepository: Repository<FoodItem>,
+    @InjectRepository(Meal)
+    private mealRepository: Repository<Meal>,
     private httpService: HttpService,
   ) {}
   private openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -116,6 +119,20 @@ export class GptService {
       console.error('Error in translation:', error);
       throw error;
     }
+  }
+
+  public async saveMealResult(
+    userId: number,
+    reportAI: string,
+    report: string,
+  ): Promise<Meal> {
+    const meal = this.mealRepository.create({
+      userId,
+      reportAI,
+      report,
+    });
+
+    return this.mealRepository.save(meal);
   }
 
   // csv파일을 db에 올린 흔적... -> 다신 안씀 ㅋㅋㅋㅋㅋ
