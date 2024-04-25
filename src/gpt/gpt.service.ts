@@ -135,6 +135,16 @@ export class GptService {
     return this.mealRepository.save(meal);
   }
 
+  async updateMeal(mealId: number, newReport: string): Promise<Meal> {
+    const meal = await this.mealRepository.findOneBy({ mealId });
+    if (!meal) {
+      throw new Error('Meal not found');
+    }
+    meal.report = newReport || meal.report;
+    await this.mealRepository.save(meal);
+    return meal;
+  }
+
   // csv파일을 db에 올린 흔적... -> 다신 안씀 ㅋㅋㅋㅋㅋ
   // public async saveCsvOnDb(): Promise<void> {
   //   const filePath = 'food_ai_db.csv';
