@@ -1,12 +1,27 @@
-import { Body, Controller, HttpStatus, Post, Res, Get } from '@nestjs/common';
-import { Response } from 'express';
+import {
+  Body,
+  Controller,
+  // HttpStatus,
+  UseInterceptors,
+  Post,
+  UseGuards,
+  // Res,
+  // Get,
+} from '@nestjs/common';
+// import { Response } from 'express';
+import { AuthGuard } from '@nestjs/passport';
 import { GptService } from './gpt.service';
+import { User } from 'src/entities/user.entity';
 import {
   ProsConsDiscusserDto,
   TranslateDto,
   ProcessImageAndManageDietDto,
+  SaveResultDto,
 } from './dtos';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
+import { TimeoutInterceptor } from 'utils/timeout.intercepter';
+import { UserInfo } from 'src/user/utils/userInfo.decorator';
 
 @ApiTags('AI')
 @Controller('gpt')
@@ -25,8 +40,13 @@ export class GptController {
       },
     },
   })
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('imageToText')
-  public async imageToText(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
+  @UseInterceptors(TimeoutInterceptor)
+  public async imageToText(
+    @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
+    @UserInfo() user: User,
+  ) {
     return this.gptService.imageToText(prosConsDiscusserDto);
   }
 
@@ -38,6 +58,7 @@ export class GptController {
   //     prosConsDiscusserDto,
   //   );
   // }
+
   @ApiOperation({ summary: 'gpt3.5로 이미지에 대한 텍스트 생성' })
   @ApiBody({
     schema: {
@@ -50,7 +71,9 @@ export class GptController {
       },
     },
   })
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('dietManagerWithDB')
+  @UseInterceptors(TimeoutInterceptor)
   public async dietManagerWithDB(
     @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
   ) {
@@ -65,6 +88,7 @@ export class GptController {
   //     processImageAndManageDietDto,
   //   );
   // }
+
   @ApiOperation({ summary: '이미지 인식 + 텍스트 생성' })
   @ApiBody({
     schema: {
@@ -77,7 +101,9 @@ export class GptController {
       },
     },
   })
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('processImageAndManageDietDB')
+  @UseInterceptors(TimeoutInterceptor)
   public async processImageAndManageDietDB(
     @Body() processImageAndManageDietDto: ProcessImageAndManageDietDto,
   ) {
@@ -86,14 +112,33 @@ export class GptController {
     );
   }
 
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('translate')
+  @UseInterceptors(TimeoutInterceptor)
   translateText(@Body() translateDto: TranslateDto) {
     return this.gptService.translateText(translateDto);
   }
 
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('translate2')
+  @UseInterceptors(TimeoutInterceptor)
   translateText2(@Body() translateDto: TranslateDto) {
     return this.gptService.translateText(translateDto);
+  }
+
+  @Post('saveMeal')
+  @UseGuards(AuthGuard('jwt'))
+  public async saveMealResult(
+    @Body() saveResultDto: SaveResultDto,
+    @UserInfo() user: User,
+  ): Promise<any> {
+    const { reportAI, report } = saveResultDto;
+    const savedMeal = await this.gptService.saveMealResult(
+      user.id,
+      reportAI,
+      report,
+    );
+    return { status: 'success', data: savedMeal };
   }
 
   // DB에 csv파일 내용 올리는 함수
