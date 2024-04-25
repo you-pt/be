@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
-import 'firebase/compat/messaging';
 import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
@@ -41,7 +40,6 @@ export class MessageService {
         body: message,
       },
     };
-    console.log(payload);
     const result = await admin
       .messaging()
       .send(payload)
@@ -67,7 +65,6 @@ export class MessageService {
           body: message,
         },
       };
-      console.log(payload);
       const result = await admin
         .messaging()
         .send(payload)
