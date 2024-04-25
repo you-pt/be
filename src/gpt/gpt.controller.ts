@@ -5,11 +5,16 @@ import {
   UseInterceptors,
   Post,
   UseGuards,
+  SetMetadata,
+  Patch,
+  Param,
+  ParseIntPipe,
   // Res,
   // Get,
 } from '@nestjs/common';
 // import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'auth/roles.guard';
 import { GptService } from './gpt.service';
 import { User } from 'src/entities/user.entity';
 import {
@@ -17,11 +22,14 @@ import {
   TranslateDto,
   ProcessImageAndManageDietDto,
   SaveResultDto,
+  ReportMealDto,
 } from './dtos';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { TimeoutInterceptor } from 'utils/timeout.intercepter';
 import { UserInfo } from 'src/user/utils/userInfo.decorator';
+import { Roles } from 'auth/roles.decorator';
+import { Role } from '../user/types/userRole.type';
 
 @ApiTags('AI')
 @Controller('gpt')
@@ -139,6 +147,18 @@ export class GptController {
       report,
     );
     return { status: 'success', data: savedMeal };
+  }
+
+  @Patch('reportMeal/:mealId')
+  @UseGuards(RolesGuard)
+  @Roles(Role.Trainer)
+  reportMeal(
+    @Param('mealId', ParseIntPipe) mealId: number,
+    @UserInfo() user: User,
+    @Body() reportMealDto: ReportMealDto,
+  ) {
+    const newReport = reportMealDto.report;
+    return this.gptService.updateMeal(mealId, newReport);
   }
 
   // DB에 csv파일 내용 올리는 함수
