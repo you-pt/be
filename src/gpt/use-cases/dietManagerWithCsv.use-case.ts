@@ -27,31 +27,18 @@ Check what food is in the entered word,
 and evaluate diet.
 
 ##Example##
-["Food 1", "Food 2"]
 {
-"Diet":
-{
-"Food name" : "Food 1",
-"Energy" : 1,
-"Carbohydrate" : 1,
-"Fat" : 1,
-"Protein" : 1
-},
-{
-"Food name" : "Food 2",
-"Energy" : 2,
-"Carbohydrate" : 2,
-"Fat" : 2,
-"Protein" : 2
-},
-"Nutritional Info":
-{
-"Energy" : 1+2
-"Carbohydrate" : 1+2
-"Fat" : 1+2
-"Protein" : 1+2
-},
-"Evaluation": ""
+	"reportAI" : {
+		"Diet": [
+			{ "Food name" : "a", "Energy" : 1, "Carbohydrate" : 1, "Fat" : 1, "Protein" : 1 },
+			{ "Food name" : "b", "Energy" : 2, "Carbohydrate" : 2, "Fat" : 2, "Protein" : 2 },
+			{ "Food name" : "c", "Energy" : 3, "Carbohydrate" : 3, "Fat" : 3, "Protein" : 3 },
+		],
+		"Nutritional Info": {
+			"Energy" : 6, "Carbohydrate" : 6, "Fat" : 6, "Protein" : 6
+		},
+		"Evaluation": "Your menu is~~"
+	}
 }
 `,
       },
