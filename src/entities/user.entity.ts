@@ -46,6 +46,9 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.User, nullable: false })
   role: Role;
+  
+  @Column()
+  token: string;
 
   @CreateDateColumn()
   createdAt: Date;
@@ -59,7 +62,12 @@ export class User {
   @OneToMany(() => Message, (message) => message.user)
   messages: Message[];
 
-  @OneToMany(() => Schedule, (schedule) => {schedule.user, schedule.trainer})
+  @OneToMany(
+    () => Schedule,
+    (schedule) => {
+      schedule.user, schedule.trainer;
+    },
+  )
   schedules: Schedule[];
 
   @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {

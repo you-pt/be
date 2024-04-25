@@ -31,13 +31,13 @@ export class Schedule {
   trainer: User;
 
   @Column()
-  ptDate: string;
-
-  @Column()
-  ptTime: string;
+  ptTime: Date;
 
   @Column()
   content: string;
+
+  @Column()
+  cronJobId: string
 
   @CreateDateColumn()
   createdAt: Date;

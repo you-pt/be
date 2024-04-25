@@ -5,6 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entities/user.entity';
+import { Schedule } from '../entities/schedules.entity';
+import { MessageModule } from '../message/message.module';
 
 
 @Module({
@@ -15,7 +17,8 @@ import { User } from '../entities/user.entity';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Schedule]),
+    MessageModule
   ],
   controllers: [UserController],
   providers: [UserService],
