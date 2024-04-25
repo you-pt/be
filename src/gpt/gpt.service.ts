@@ -121,15 +121,10 @@ export class GptService {
     }
   }
 
-  public async saveMealResult(
-    userId: number,
-    reportAI: string,
-    report: string,
-  ): Promise<Meal> {
+  public async saveMealResult(userId: number, reportAI: string): Promise<Meal> {
     const meal = this.mealRepository.create({
       userId,
       reportAI,
-      report,
     });
 
     return this.mealRepository.save(meal);
