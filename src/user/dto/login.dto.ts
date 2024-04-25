@@ -9,4 +9,7 @@ export class LoginDto {
     @IsNotEmpty({ message: '비밀번호를 입력해주세요.' })
     @Length(8)
     password: string;
+
+    // @IsString()
+    token: string;
 }
