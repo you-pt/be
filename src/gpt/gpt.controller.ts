@@ -120,13 +120,36 @@ export class GptController {
     );
   }
 
-  @Throttle({ default: { limit: 3, ttl: 60000 } })
-  @Post('translate')
-  @UseInterceptors(TimeoutInterceptor)
-  translateText(@Body() translateDto: TranslateDto) {
-    return this.gptService.translateText(translateDto);
-  }
+  // @ApiOperation({ summary: 'gpt3.5를 사용한 번역' })
+  // @ApiBody({
+  //   schema: {
+  //     properties: {
+  //       prompt: {
+  //         type: 'string',
+  //         example:
+  //           'Menu: Chicken sandwiches with pickles, lettuce, and sauce. Side of crinkle-cut fries.',
+  //       },
+  //     },
+  //   },
+  // })
+  // @Throttle({ default: { limit: 3, ttl: 60000 } })
+  // @Post('translate')
+  // @UseInterceptors(TimeoutInterceptor)
+  // translateText(@Body() translateDto: TranslateDto) {
+  //   return this.gptService.translateText(translateDto);
+  // }
 
+  @ApiOperation({ summary: 'google번역기 API를 사용한 번역' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good for you blahblah',
+        },
+      },
+    },
+  })
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('translate2')
   @UseInterceptors(TimeoutInterceptor)
@@ -134,21 +157,39 @@ export class GptController {
     return this.gptService.translateText(translateDto);
   }
 
+  @ApiOperation({ summary: '로그인 한 유저에 대한 식단 평가 정보 저장' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good for you blahblah',
+        },
+      },
+    },
+  })
   @Post('saveMeal')
   @UseGuards(AuthGuard('jwt'))
   public async saveMealResult(
     @Body() saveResultDto: SaveResultDto,
     @UserInfo() user: User,
   ): Promise<any> {
-    const { reportAI, report } = saveResultDto;
-    const savedMeal = await this.gptService.saveMealResult(
-      user.id,
-      reportAI,
-      report,
-    );
+    const { reportAI } = saveResultDto;
+    const savedMeal = await this.gptService.saveMealResult(user.id, reportAI);
     return { status: 'success', data: savedMeal };
   }
 
+  @ApiOperation({ summary: '트레이너 유저의 식단 평가 작성' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good',
+        },
+      },
+    },
+  })
   @Patch('reportMeal/:mealId')
   @UseGuards(RolesGuard)
   @Roles(Role.Trainer)
