@@ -6,8 +6,8 @@ import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 //웹소켓
 import { join } from 'path';
-import { WsAdapter } from '@nestjs/platform-ws';
-import { SocketIoAdapter } from 'adapters/socket-io.adapter';
+
+import { SocketIoAdapter } from '../adapters/socket-io.adapter';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
@@ -34,9 +34,6 @@ async function bootstrap() {
 
   //웹소켓
   app.useWebSocketAdapter(new SocketIoAdapter(app));
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'views'));
-  app.setViewEngine('ejs');
 
   await app.listen(3001);
 }

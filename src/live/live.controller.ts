@@ -22,17 +22,24 @@ export class LiveController {
     this.OPENVIDU_SECRET,
   );
 
+  @Get('api/sessions')
+  temp() {
+    return 'Hi';
+  }
+
   @Post('api/sessions')
   async sessions(@Req() req, @Res() res) {
     try {
+      console.log('api/sessions start');
       const session = await this.openvidu.createSession(req.body);
-
+      console.log('api/sessions end');
       res.status(HttpStatus.CREATED).send(session.sessionId);
     } catch (error) {
       console.log(this.OPENVIDU_URL);
       res.status(HttpStatus.INTERNAL_SERVER_ERROR).send(error.message);
     }
   }
+
   @Post('api/sessions/:sessionId/connections')
   async sessionsConnections(@Req() req, @Res() res, @Param() params) {
     try {

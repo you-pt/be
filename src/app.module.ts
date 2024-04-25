@@ -1,5 +1,5 @@
 import { LiveModule } from './live/live.module';
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { GptModule } from './gpt/gpt.module';
@@ -12,8 +12,11 @@ import { AuthModule } from 'auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
-// import { RedisModule } from '../redis/redis.module';
-import { EventsModule } from './streamList/streamList.module';
+import { ScheduleModule } from './schedule/schedule.module';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { RoomListModule } from './room-list/room-list.module';
+import { StreamListModule } from './streamList/streamList.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -53,12 +56,26 @@ const typeOrmModuleOptions = {
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
+    ScheduleModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 1000,
+        limit: 3,
+      },
+    ]),
+    RoomListModule,
     LiveModule,
-    EventsModule,
-    // RedisModule,
+    StreamListModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    Logger,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

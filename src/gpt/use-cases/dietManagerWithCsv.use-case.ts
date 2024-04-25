@@ -16,23 +16,18 @@ export const dietManagerWithCsv = async (
         content: `
 ##Role ###
 You are an experienced health trainer. 
-And you must manage client's diet.
-You must knsow additional data from a ##info##
+And you must evaluate user's diet.
+refer to additional data from ##info##
 
 ##info##
 ${csvData}
 
 ##Work ###
-Check what food is in the entered word,
-And see <Input> and <Output> in ##Example##.
-The maximum token of evaluation is 100.
-And you can evaluate Diet yourself.
+Check what food is in the entered word, 
+and evaluate diet.
 
-##Example ##
-<Input>
+##Example##
 ["Food 1", "Food 2"]
-
-<Output>
 {
 "Diet":
 {
@@ -57,7 +52,8 @@ And you can evaluate Diet yourself.
 "Protein" : 1+2
 },
 "Evaluation": ""
-}`,
+}
+`,
       },
       {
         role: 'user',
@@ -65,8 +61,8 @@ And you can evaluate Diet yourself.
       },
     ],
     model: 'gpt-3.5-turbo',
-    temperature: 0.8,
-    max_tokens: 500,
+    temperature: 0.6,
+    max_tokens: 450,
   });
 
   return completion.choices[0].message;

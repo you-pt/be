@@ -9,9 +9,8 @@ export class ChatRoomService {
   constructor() {
     this.chatRoomList = {
       'room:lobby': {
-        roomId: 'room:lobby',
-        roomName: '로비',
-        cheifId: null,
+        sessionId: 'room:lobby',
+        participantsNumber: 0,
       },
     };
   }
@@ -25,9 +24,8 @@ export class ChatRoomService {
     });
     // return this.chatRoomList[roomId];
     this.chatRoomList[roomId] = {
-      roomId,
-      cheifId: client.id,
-      roomName,
+      sessionId: roomId,
+      participantsNumber: +1,
     };
     client.data.roomId = roomId;
     client.rooms.clear();
@@ -39,11 +37,11 @@ export class ChatRoomService {
     client.rooms.clear();
     client.join(roomId);
     const { nickname } = client.data;
-    const { roomName } = this.getChatRoom(roomId);
+    const { participantsNumber } = this.getChatRoom(roomId);
     client.to(roomId).emit('getMessage', {
       id: null,
       nickname: '안내',
-      message: `"${nickname}"님이 "${roomName}"방에 접속하셨습니다.`,
+      message: `"${nickname}"님이 "${participantsNumber}"방에 접속하셨습니다.`,
     });
   }
 
@@ -59,8 +57,8 @@ export class ChatRoomService {
     });
   }
 
-  getChatRoom(roomId: string): chatRoomListDTO {
-    return this.chatRoomList[roomId];
+  getChatRoom(sessionId: string): chatRoomListDTO {
+    return this.chatRoomList[sessionId];
   }
 
   getChatRoomList(): Record<string, chatRoomListDTO> {

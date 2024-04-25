@@ -42,8 +42,6 @@ export class UserService {
       ...createUserDto,
       password: hashedPassword,
     });
-
-    return newUser;
   }
 
   async login(loginDto: LoginDto) {

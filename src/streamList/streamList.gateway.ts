@@ -10,6 +10,7 @@ import {
 import { Server, Socket } from 'socket.io';
 import { setInitDTO } from './dto/setinit.dto';
 import { ChatRoomService } from './streamList.service';
+import { RoomListService } from 'src/room-list/room-list.service';
 
 @WebSocketGateway(5000, {
   cors: {},
@@ -17,7 +18,10 @@ import { ChatRoomService } from './streamList.service';
 export class StreamListGateway
   implements OnGatewayConnection, OnGatewayDisconnect
 {
-  constructor(private readonly ChatRoomService: ChatRoomService) {}
+  constructor(
+    private readonly ChatRoomService: ChatRoomService,
+    private readonly RoomListService: RoomListService,
+  ) {}
   @WebSocketServer()
   server: Server;
 
@@ -73,10 +77,6 @@ export class StreamListGateway
 
     return {
       nickname: client.data.nickname,
-      room: {
-        roomId: 'room:lobby',
-        roomName: '로비',
-      },
     };
   }
 
@@ -103,8 +103,9 @@ export class StreamListGateway
   createChatRoom(client: Socket, roomName: string) {
     this.ChatRoomService.createChatRoom(client, roomName);
     return {
-      roomId: client.data.roomId,
-      roomName: this.ChatRoomService.getChatRoom(client.data.roomId).roomName,
+      sessionId: client.data.roomId,
+      participantsNumber: this.ChatRoomService.getChatRoom(client.data.roomId)
+        .participantsNumber,
     };
   }
 
@@ -118,7 +119,20 @@ export class StreamListGateway
     this.ChatRoomService.enterChatRoom(client, roomId);
     return {
       roomId: roomId,
-      roomName: this.ChatRoomService.getChatRoom(roomId).roomName,
+      roomName: this.ChatRoomService.getChatRoom(roomId).sessionId,
     };
+  }
+
+  @SubscribeMessage('sessionUpdate')
+  async handleGetSessionInfo(client: Socket): Promise<void> {
+    try {
+      const sessionInfo = await this.RoomListService.findRoomList();
+
+      // 클라이언트에 세션 정보 전송
+      client.emit('sessionInfo', sessionInfo);
+    } catch (error) {
+      console.error('Failed to retrieve session info from Redis:', error);
+      client.emit('sessionInfo', null); // 에러 발생 시 클라이언트에 null 전송
+    }
   }
 }

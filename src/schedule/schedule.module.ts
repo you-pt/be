@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
+import { ScheduleService } from './schedule.service';
+import { ScheduleController } from './schedule.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../entities/user.entity';
-
+import { Schedule } from '../entities/schedules.entity';
 
 @Module({
   imports: [
@@ -15,10 +14,10 @@ import { User } from '../entities/user.entity';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([Schedule]),
   ],
-  controllers: [UserController],
-  providers: [UserService],
-  exports: [UserService],
+  controllers: [ScheduleController],
+  providers: [ScheduleService],
+  exports: [ScheduleService]
 })
-export class UserModule {}
+export class ScheduleModule {}
