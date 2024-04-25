@@ -9,7 +9,6 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { User } from './user.entity';
-import { Message } from './messages.entity';
 
 @Entity({ name: 'schedules' })
 export class Schedule {
@@ -44,7 +43,4 @@ export class Schedule {
 
   @UpdateDateColumn()
   updatedAt: Date;
-
-  @OneToMany(()=>Message, message => message.schedule)
-  messages: Message[]
 }

@@ -16,6 +16,7 @@ import { ScheduleModule } from './schedule/schedule.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RoomListModule } from './room-list/room-list.module';
+import { ChatModule } from './chat/chat.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -64,6 +65,7 @@ const typeOrmModuleOptions = {
     ]),
     RoomListModule,
     LiveModule,
+    ChatModule,
   ],
   controllers: [AppController],
   providers: [

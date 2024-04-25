@@ -11,7 +11,7 @@ import {
 import { Role } from '../user/types/userRole.type';
 import { Gender } from '../user/types/gender.type';
 import { Meal } from './meals.entity';
-import { Message } from './messages.entity';
+import { Chat } from '../entities/chat.entity';
 import { Schedule } from './schedules.entity';
 import { TrainerInfo } from './trainerInfo.entity';
 
@@ -56,10 +56,15 @@ export class User {
   @OneToMany(() => Meal, (meal) => meal.user)
   meals: Meal[];
 
-  @OneToMany(() => Message, (message) => message.user)
-  messages: Message[];
+  // @OneToMany(() => Chat, (chat) => chat.user)
+  // chats: Chat[];
 
-  @OneToMany(() => Schedule, (schedule) => {schedule.user, schedule.trainer})
+  @OneToMany(
+    () => Schedule,
+    (schedule) => {
+      schedule.user, schedule.trainer;
+    },
+  )
   schedules: Schedule[];
 
   @OneToOne(() => TrainerInfo, (trainerInfo) => trainerInfo.user, {

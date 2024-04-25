@@ -1,21 +1,27 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Meal } from "./meals.entity";
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Meal } from './meals.entity';
 
-@Entity({name: "menus"})
+@Entity({ name: 'menus' })
 export class Menu {
   @PrimaryGeneratedColumn()
-  menuId: number
+  menuId: number;
 
   @Column()
-  mealId: number
+  mealId: number;
 
-  @ManyToOne(() => Meal, meal => meal.menus, { onDelete: 'CASCADE' })
-  @JoinColumn({name:"meal_id",referencedColumnName: "mealId"})
-  meal: Meal
-
-  @Column()
-  name: string
+  @ManyToOne(() => Meal, (meal) => meal.menus, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'meal_id', referencedColumnName: 'mealId' })
+  meal: Meal;
 
   @Column()
-  kcal: number
+  name: string;
+
+  @Column()
+  kcal: number;
 }
