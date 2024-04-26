@@ -39,6 +39,11 @@ export class MessageService {
       data: {
         body: message,
       },
+      webpush: {
+        fcmOptions: {
+          link: '/',
+        },
+      },
     };
     const result = await admin
       .messaging()
