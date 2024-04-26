@@ -38,7 +38,9 @@ export class ChatService {
   create(creatChatDto: CreateChatDto, clientId: string) {
     const { roomId, text } = creatChatDto;
     const chat: Chat = {
-      id: this.chatRooms[roomId]?.length + 1 || 1,
+      id:
+        this.chatRooms[roomId]?.length + 1 ||
+        1 /**gpt 도움..ㅋㅋ 실제로는 고유한 ID를 생성해야 함 */,
       name: this.clientToUser[clientId],
       text,
       roomId: '',
