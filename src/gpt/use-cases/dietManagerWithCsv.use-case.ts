@@ -30,9 +30,9 @@ and evaluate diet.
 {
 	"reportAI" : {
 		"Diet": [
-			{ "Food name" : "a", "Energy" : 1, "Carbohydrate" : 1, "Fat" : 1, "Protein" : 1 },
-			{ "Food name" : "b", "Energy" : 2, "Carbohydrate" : 2, "Fat" : 2, "Protein" : 2 },
-			{ "Food name" : "c", "Energy" : 3, "Carbohydrate" : 3, "Fat" : 3, "Protein" : 3 },
+			{ "FoodName" : "a", "Energy" : 1, "Carbohydrate" : 1, "Fat" : 1, "Protein" : 1 },
+			{ "FoodName" : "b", "Energy" : 2, "Carbohydrate" : 2, "Fat" : 2, "Protein" : 2 },
+			{ "FoodName" : "c", "Energy" : 3, "Carbohydrate" : 3, "Fat" : 3, "Protein" : 3 },
 		],
 		"Nutritional Info": {
 			"Energy" : 6, "Carbohydrate" : 6, "Fat" : 6, "Protein" : 6

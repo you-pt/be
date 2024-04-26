@@ -1,71 +1,37 @@
 import { Injectable } from '@nestjs/common';
-import { chatRoomListDTO } from './dto/setinit.dto';
-import { Socket } from 'socket.io';
-import { v4 as uuidv4 } from 'uuid';
+import { CreateChatDto } from './dto/create-chat.dto';
+import { Chat } from 'src/entities/chat.entity';
 
 @Injectable()
-export class ChatRoomService {
-  private chatRoomList: Record<string, chatRoomListDTO>;
-  constructor() {
-    this.chatRoomList = {
-      'room:lobby': {
-        sessionId: 'room:lobby',
-        participantsNumber: 0,
-      },
+export class ChatService {
+  chats: CreateChatDto[] = [{ name: '사용자', text: '내용' }];
+  clientToUser = {};
+
+  identify(name: string, clientId: string) {
+    this.clientToUser[clientId] = name;
+
+    return Object.values(this.clientToUser); /**그리고 이 객체의 값을 반환함. 
+    이걸로 현재 온라인에 접속해있는 사람이 누구인지 알아내는 방법도 구현해 낼 수 있음 */
+  }
+
+  /**이름으로 클라이언트를 가져올 수 있는 유틸리티 메소드 */
+  getClientName(clientId: string) {
+    return this.clientToUser[clientId];
+  }
+
+  /**채팅 칠때 이름도 같이 */
+  create(creatChatDto: CreateChatDto, clientId: string) {
+    const chat = {
+      name: this.clientToUser[clientId],
+      text: creatChatDto.text,
     };
-  }
-  createChatRoom(client: Socket, roomName: string): void {
-    const roomId = `room:${uuidv4()}`;
-    const nickname: string = client.data.nickname;
-    client.emit('getMessage', {
-      id: null,
-      nickname: '안내',
-      message: '"' + nickname + '"님이 "' + roomName + '"방을 생성하였습니다.',
-    });
-    // return this.chatRoomList[roomId];
-    this.chatRoomList[roomId] = {
-      sessionId: roomId,
-      participantsNumber: +1,
-    };
-    client.data.roomId = roomId;
-    client.rooms.clear();
-    client.join(roomId);
+
+    this.chats.push(chat);
+
+    return chat;
   }
 
-  enterChatRoom(client: Socket, roomId: string) {
-    client.data.roomId = roomId;
-    client.rooms.clear();
-    client.join(roomId);
-    const { nickname } = client.data;
-    const { participantsNumber } = this.getChatRoom(roomId);
-    client.to(roomId).emit('getMessage', {
-      id: null,
-      nickname: '안내',
-      message: `"${nickname}"님이 "${participantsNumber}"방에 접속하셨습니다.`,
-    });
-  }
-
-  exitChatRoom(client: Socket, roomId: string) {
-    client.data.roomId = `room:lobby`;
-    client.rooms.clear();
-    client.join(`room:lobby`);
-    const { nickname } = client.data;
-    client.to(roomId).emit('getMessage', {
-      id: null,
-      nickname: '안내',
-      message: '"' + nickname + '"님이 방에서 나갔습니다.',
-    });
-  }
-
-  getChatRoom(sessionId: string): chatRoomListDTO {
-    return this.chatRoomList[sessionId];
-  }
-
-  getChatRoomList(): Record<string, chatRoomListDTO> {
-    return this.chatRoomList;
-  }
-
-  deleteChatRoom(roomId: string) {
-    delete this.chatRoomList[roomId];
+  findAll() {
+    return this.chats;
   }
 }

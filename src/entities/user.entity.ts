@@ -46,6 +46,9 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.User, nullable: false })
   role: Role;
+  
+  @Column()
+  token: string;
 
   @CreateDateColumn()
   createdAt: Date;

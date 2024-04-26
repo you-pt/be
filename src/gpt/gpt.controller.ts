@@ -5,11 +5,16 @@ import {
   UseInterceptors,
   Post,
   UseGuards,
+  SetMetadata,
+  Patch,
+  Param,
+  ParseIntPipe,
   // Res,
   // Get,
 } from '@nestjs/common';
 // import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
+import { RolesGuard } from 'auth/roles.guard';
 import { GptService } from './gpt.service';
 import { User } from 'src/entities/user.entity';
 import {
@@ -17,11 +22,14 @@ import {
   TranslateDto,
   ProcessImageAndManageDietDto,
   SaveResultDto,
+  ReportMealDto,
 } from './dtos';
 import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Throttle } from '@nestjs/throttler';
 import { TimeoutInterceptor } from 'utils/timeout.intercepter';
 import { UserInfo } from 'src/user/utils/userInfo.decorator';
+import { Roles } from 'auth/roles.decorator';
+import { Role } from '../user/types/userRole.type';
 
 @ApiTags('AI')
 @Controller('gpt')
@@ -112,13 +120,36 @@ export class GptController {
     );
   }
 
-  @Throttle({ default: { limit: 3, ttl: 60000 } })
-  @Post('translate')
-  @UseInterceptors(TimeoutInterceptor)
-  translateText(@Body() translateDto: TranslateDto) {
-    return this.gptService.translateText(translateDto);
-  }
+  // @ApiOperation({ summary: 'gpt3.5를 사용한 번역' })
+  // @ApiBody({
+  //   schema: {
+  //     properties: {
+  //       prompt: {
+  //         type: 'string',
+  //         example:
+  //           'Menu: Chicken sandwiches with pickles, lettuce, and sauce. Side of crinkle-cut fries.',
+  //       },
+  //     },
+  //   },
+  // })
+  // @Throttle({ default: { limit: 3, ttl: 60000 } })
+  // @Post('translate')
+  // @UseInterceptors(TimeoutInterceptor)
+  // translateText(@Body() translateDto: TranslateDto) {
+  //   return this.gptService.translateText(translateDto);
+  // }
 
+  @ApiOperation({ summary: 'google번역기 API를 사용한 번역' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good for you blahblah',
+        },
+      },
+    },
+  })
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('translate2')
   @UseInterceptors(TimeoutInterceptor)
@@ -126,19 +157,49 @@ export class GptController {
     return this.gptService.translateText(translateDto);
   }
 
+  @ApiOperation({ summary: '로그인 한 유저에 대한 식단 평가 정보 저장' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good for you blahblah',
+        },
+      },
+    },
+  })
   @Post('saveMeal')
   @UseGuards(AuthGuard('jwt'))
   public async saveMealResult(
     @Body() saveResultDto: SaveResultDto,
     @UserInfo() user: User,
   ): Promise<any> {
-    const { reportAI, report } = saveResultDto;
-    const savedMeal = await this.gptService.saveMealResult(
-      user.id,
-      reportAI,
-      report,
-    );
+    const { reportAI } = saveResultDto;
+    const savedMeal = await this.gptService.saveMealResult(user.id, reportAI);
     return { status: 'success', data: savedMeal };
+  }
+
+  @ApiOperation({ summary: '트레이너 유저의 식단 평가 작성' })
+  @ApiBody({
+    schema: {
+      properties: {
+        prompt: {
+          type: 'string',
+          example: 'this is good',
+        },
+      },
+    },
+  })
+  @Patch('reportMeal/:mealId')
+  @UseGuards(RolesGuard)
+  @Roles(Role.Trainer)
+  reportMeal(
+    @Param('mealId', ParseIntPipe) mealId: number,
+    @UserInfo() user: User,
+    @Body() reportMealDto: ReportMealDto,
+  ) {
+    const newReport = reportMealDto.report;
+    return this.gptService.updateMeal(mealId, newReport);
   }
 
   // DB에 csv파일 내용 올리는 함수

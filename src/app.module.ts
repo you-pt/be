@@ -8,15 +8,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import Joi from 'joi';
-import { AuthModule } from 'auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 import { LoggerMiddleware } from './middlewares/logger.middleware';
 import { ImageModule } from './image/image.module';
 import { DietModule } from './diet/diet.module';
-import { ScheduleModule } from './schedule/schedule.module';
+import { SchedulesModule } from './schedule/schedule.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RoomListModule } from './room-list/room-list.module';
 import { StreamListModule } from './streamList/streamList.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { MessageModule } from './message/message.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -50,13 +52,14 @@ const typeOrmModuleOptions = {
         DB_SYNC: Joi.boolean().required(),
       }),
     }),
+    ScheduleModule.forRoot(),
     UserModule,
     GptModule,
     ImageModule,
     DietModule,
     AuthModule,
     TypeOrmModule.forRootAsync(typeOrmModuleOptions),
-    ScheduleModule,
+    SchedulesModule,
     ThrottlerModule.forRoot([
       {
         ttl: 1000,
@@ -66,6 +69,7 @@ const typeOrmModuleOptions = {
     RoomListModule,
     LiveModule,
     StreamListModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [

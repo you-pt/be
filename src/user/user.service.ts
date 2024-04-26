@@ -1,5 +1,6 @@
 import {
   ConflictException,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -10,18 +11,27 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { compare, hash } from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import _ from 'lodash';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import { User } from '../entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { Role } from './types/userRole.type';
+import { SchedulerRegistry } from '@nestjs/schedule';
+import { Schedule } from '../entities/schedules.entity';
+import { MessageService } from 'src/message/message.service';
+import { v4 as uuidv4 } from "uuid";
 
 @Injectable()
 export class UserService {
   constructor(
+    private schedulerRegistry: SchedulerRegistry,
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    @InjectRepository(Schedule)
+    private scheduleRepository: Repository<Schedule>,
+    @Inject(MessageService)
+    private readonly messageService: MessageService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
   async register(createUserDto: CreateUserDto) {
     const existingUser = await this.findByEmail(createUserDto.email);
@@ -38,7 +48,7 @@ export class UserService {
     }
 
     const hashedPassword = await hash(createUserDto.password, 10);
-    const newUser = await this.userRepository.save({
+    await this.userRepository.save({
       ...createUserDto,
       password: hashedPassword,
     });
@@ -46,7 +56,7 @@ export class UserService {
 
   async login(loginDto: LoginDto) {
     const user = await this.userRepository.findOne({
-      select: ['id', 'email', 'password'],
+      select: ['id', 'email', 'password', 'token'],
       where: { email: loginDto.email },
     });
     if (_.isNil(user)) {
@@ -56,6 +66,33 @@ export class UserService {
     if (!(await compare(loginDto.password, user.password))) {
       throw new UnauthorizedException('비밀번호를 확인해주세요.');
     }
+
+    if (user.token !== loginDto.token) {
+      await this.userRepository.update({ id: user.id }, { token: loginDto.token });
+      const schedules = await this.scheduleRepository.find({
+        where: {
+          ptTime: Raw((alias) => `${alias} > NOW()`),
+          userId: user.id
+        },
+      })
+      console.log(schedules);
+
+      for(let schedule of schedules) {
+        const cronJobId = uuidv4();
+
+        let date = schedule.ptTime;
+        date.setMinutes(date.getMinutes() - 10);
+
+        this.schedulerRegistry.deleteCronJob(schedule.cronJobId);
+        await this.messageService.addCronJob(loginDto.token, 'PT를 준비해주세요! 10분 뒤 시작합니다!',
+        `날짜 : ${schedule.ptTime.toLocaleString()}`,
+        date, cronJobId)
+      }
+      
+    }
+
+
+
 
     const payload = { id: user.id, email: user.email };
     return {
@@ -83,7 +120,7 @@ export class UserService {
   async findOne(id: number) {
     return await this.userRepository.findOne({
       where: { id },
-      select: { email: true, nickname: true, role: true },
+      select: { email: true, nickname: true, role: true, token: true },
     });
   }
 
