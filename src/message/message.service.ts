@@ -39,6 +39,11 @@ export class MessageService {
       data: {
         body: message,
       },
+      webpush: {
+        fcmOptions: {
+          link: '/'
+        }
+      },
     };
     const result = await admin
       .messaging()
@@ -53,7 +58,7 @@ export class MessageService {
     return result;
   }
 
-  async addCronJob(token:string, title:string, message:string, ptTime:Date, id:string) {
+  async addCronJob(token: string, title: string, message: string, ptTime: Date, id: string) {
     const job = new CronJob(new Date(`${ptTime}`), async () => {
       const payload = {
         token: token,
