@@ -4,8 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
 
-
-
 @Injectable()
 export class MessageService {
   constructor(
@@ -21,7 +19,9 @@ export class MessageService {
       clientId: this.config.get<string>('FIREBASE_CLIENT_ID'),
       authUri: this.config.get<string>('FIREBASE_AUTH_URI'),
       tokenUri: this.config.get<string>('FIREBASE_TOKEN_URI'),
-      authProviderX509CertUrl: this.config.get<string>('FIREBASE_AUTH_CERT_URL'),
+      authProviderX509CertUrl: this.config.get<string>(
+        'FIREBASE_AUTH_CERT_URL',
+      ),
       clientC509CertUrl: this.config.get<string>('FIREBASE_CLIENT_CERT_URL'),
     };
     admin.initializeApp({
@@ -41,8 +41,8 @@ export class MessageService {
       },
       webpush: {
         fcmOptions: {
-          link: '/'
-        }
+          link: '/',
+        },
       },
     };
     const result = await admin
@@ -58,7 +58,13 @@ export class MessageService {
     return result;
   }
 
-  async addCronJob(token: string, title: string, message: string, ptTime: Date, id: string) {
+  async addCronJob(
+    token: string,
+    title: string,
+    message: string,
+    ptTime: Date,
+    id: string,
+  ) {
     const job = new CronJob(new Date(`${ptTime}`), async () => {
       const payload = {
         token: token,
@@ -79,7 +85,7 @@ export class MessageService {
         .catch((error) => {
           return { error: error.code };
         });
-    })
+    });
 
     this.schedulerRegistry.addCronJob(id, job);
     job.start();

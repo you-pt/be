@@ -1,18 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateImageDto } from './dto/create-image.dto';
 import { UpdateImageDto } from './dto/update-image.dto';
-import { S3 } from 'aws-sdk'
+import { S3 } from 'aws-sdk';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ImageService {
-  constructor(
-    private readonly config: ConfigService
-  ){}
-  
+  constructor(private readonly config: ConfigService) {}
+
   async upload(file: Express.Multer.File) {
     const { originalname } = file;
-    const bucketName = this.config.get<string>("S3_BUCKET_NAME")
+    const bucketName = this.config.get<string>('S3_BUCKET_NAME');
     return await this.uploadS3(file.buffer, bucketName, originalname);
   }
 

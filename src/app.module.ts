@@ -16,7 +16,9 @@ import { SchedulesModule } from './schedule/schedule.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { RoomListModule } from './room-list/room-list.module';
+import { StreamListModule } from './websocket/streamList.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { MessageModule } from './message/message.module';
 
 const typeOrmModuleOptions = {
   useFactory: async (
@@ -66,6 +68,8 @@ const typeOrmModuleOptions = {
     ]),
     RoomListModule,
     LiveModule,
+    StreamListModule,
+    MessageModule,
   ],
   controllers: [AppController],
   providers: [
