@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         JwtStrategy.extractJWT,
-        ExtractJwt.fromAuthHeaderAsBearerToken()
+        ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
       secretOrKey: configService.get('JWT_SECRET_KEY'),
@@ -24,15 +24,12 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   private static extractJWT(req: RequestType): string | null {
-    if (
-      req.headers.cookie &&
-      req.headers.cookie.length > 0
-  ) {
-      const [key, value] = req.headers.cookie.split('=')
+    if (req.headers.cookie && req.headers.cookie.length > 0) {
+      const [key, value] = req.headers.cookie.split('=');
       return value;
+    }
+    return null;
   }
-  return null;
-}
   async validate(payload: any) {
     const user = await this.userService.findByEmail(payload.email);
     if (_.isNil(user)) {
