@@ -174,6 +174,7 @@ export class GptController {
     @Body() saveResultDto: SaveResultDto,
     @UserInfo() user: User,
   ): Promise<any> {
+    console.log(saveResultDto);
     const { reportAI } = saveResultDto;
     const savedMeal = await this.gptService.saveMealResult(user.id, reportAI);
     return { status: 'success', data: savedMeal };
