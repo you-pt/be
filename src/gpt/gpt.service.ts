@@ -72,7 +72,7 @@ export class GptService {
 
   public async processImageAndManageDietDB(
     processImageAndManageDietDto: ProcessImageAndManageDietDto,
-  ): Promise<string> {
+  ): Promise<any> {
     const imageText = await imageToText(this.openai, {
       prompt: processImageAndManageDietDto.imageUrl,
     });
@@ -85,7 +85,7 @@ export class GptService {
       csvData: csvDataString,
     });
 
-    return dietResponse.content;
+    return JSON.parse(dietResponse.content);
   }
 
   public async translateText({ lang, prompt }: TranslateDto) {
