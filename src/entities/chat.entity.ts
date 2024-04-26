@@ -1,27 +1,22 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-// import { User } from './user.entity';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Chat {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  roomId: string;
+
   @Column()
   name: string;
-  // @Column()
-  // userId: number;
-
-  // @ManyToOne(() => User, (user) => user.chats)
-  // @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
-  // user: User;
 
   @Column()
   text: string;
 
-  // @CreateDateColumn()
-  // createdAt: Date;
+  // constructor(roomId?: string, name?: string, text?: string) {
+  //   this.roomId = roomId;
+  //   this.name = name;
+  //   this.text = text;
+  // }
 }
