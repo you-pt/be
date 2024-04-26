@@ -40,7 +40,6 @@ export class MessageService {
         body: message,
       },
     };
-    console.log(payload);
     const result = await admin
       .messaging()
       .send(payload)
@@ -72,7 +71,6 @@ export class MessageService {
           body: message,
         },
       };
-      console.log(payload);
       const result = await admin
         .messaging()
         .send(payload)

@@ -83,7 +83,7 @@ export class UserService {
         let date = schedule.ptTime;
         date.setMinutes(date.getMinutes() - 10);
 
-        this.schedulerRegistry.deleteCronJob(schedule.cronJobId);
+        // this.schedulerRegistry.deleteCronJob(schedule.cronJobId);
         await this.messageService.addCronJob(loginDto.token, 'PT를 준비해주세요! 10분 뒤 시작합니다!',
         `날짜 : ${schedule.ptTime.toLocaleString()}`,
         date, cronJobId)

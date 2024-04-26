@@ -36,9 +36,6 @@ export class Schedule {
   @Column()
   content: string;
 
-  @Column()
-  cronJobId: string
-
   @CreateDateColumn()
   createdAt: Date;
 

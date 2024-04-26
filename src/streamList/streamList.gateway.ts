@@ -14,7 +14,7 @@ import { ChatService } from './streamList.service';
 import { RoomListService } from 'src/room-list/room-list.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 
-@WebSocketGateway(5000, {
+@WebSocketGateway({
   cors: {},
 })
 export class StreamListGateway
@@ -41,34 +41,38 @@ export class StreamListGateway
 
   @SubscribeMessage('createMessage')
   async create(
-    @MessageBody('roomId') roomId: string,
     @MessageBody() createChatDto: CreateChatDto,
     @ConnectedSocket() client: Socket,
   ) {
-    console.log(roomId);
-    // const { roomId, chat } = createChatDto;
+    const { roomId, text } = createChatDto;
     const chat = await this.chatService.create(createChatDto, client.id);
+    client.join(roomId); /**클라이언트를 채팅방에 조인함. */
 
-    // this.server.to(roomId).emit('chat', chat);
-    this.server.emit('message', chat);
+    /**메세지를 해당 채팅방에 브로트캐스트함 */
+    this.server.to(roomId).emit('message', chat);
 
     return chat;
   }
 
   /**예전 메시지 불러옴. */
   @SubscribeMessage('findAllMessages')
-  findAll() {
-    return this.chatService.findAll();
+  findAll(
+    @MessageBody('roomId') roomId: string,
+    @ConnectedSocket() client: Socket,
+  ) {
+    const messages = this.chatService.findAll(roomId);
+    return messages;
   }
 
   /**채팅방에 참여한 사용자들이 누군지 식별가능 */
   @SubscribeMessage('join')
   joinRoom(
     @MessageBody('roomId') roomId: string,
-    @MessageBody('name') name: string,
+    // @MessageBody('name') name: string,
     @ConnectedSocket() client: Socket,
   ) {
-    return this.chatService.identify(name, client.id);
+    client.join(roomId); /**클라이언트 특정 채팅방에 조인함. */
+    // return this.chatService.identify(name, client.id);
   }
 
   /**사용자가 입력중임이라고 브로드캐스트해주는 부분 (Boolean 타입) */
@@ -80,8 +84,10 @@ export class StreamListGateway
   ) {
     const name = await this.chatService.getClientName(client.id);
 
+    /** 해당 채팅방에 타이핑 이벤트를 브로드캐스트함. */
     client.to(roomId).emit('typing', { name, isTyping });
-    //client.broadcast.emit('typing', { name, isTyping });
+
+    // client.broadcast.emit('typing', { name, isTyping });
   }
 
   @SubscribeMessage('sessionUpdate')
