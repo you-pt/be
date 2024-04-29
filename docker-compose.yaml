@@ -1,95 +1,9 @@
-# version: "3.9"
+version: '3.9'
+
 services:
-  api:
-    # image: thomas-oliver/nestjs-dockerized 
-    build:
-      dockerfile: Dockerfile
-      context: .
-      # target: development
-    # Mount our host Directory to the docker container
-    # Mount (.) current directory to the docker container thomas/src/app
-    # reflect file changes from host to container
-    volumes:
-      - /usr/src/app/node_modules
-      - .:/usr/src/app
-    restart: unless-stopped
-    environment: 
-      # - NODE_ENV: development
-      # - JWT_SECRET: 1hard_to_guess_secret7890a
-      # - PORT: 3000
-      - CHOKIDAR_USEPOLLING=true
-      # - WATCHPACK_POLLING=true
-    logging:
-      driver: "fluentd"
-      options:
-        fluentd-address: localhost:24224
-        fluentd-async-connect: "true"
-        labels: "production_status"
-        tag: "LOG"
-        # TypeValidatorService
-    ports:
-      - 3001:3001
-      # debugging port
-      - 9229:9229
-    # Run in Debug Mode: npm run start:debug --> Don't forget to start your vscode debugger!
-    # Run in dev Mode: npm run start:dev
-    command: npm run start:dev
-  fluentd:
-    # image: registry.cn-shenzhen.aliyuncs.com/cnregistry/fluentd-es:v1.16.2-debian-1.1
-    platform: linux/amd64
-    build: ./fluentd
-    volumes:
-      - ./fluentd/conf:/fluentd/etc
-    links:
-      - "elasticsearch"
-    ports:
-      - "24224:24224"
-      - "24224:24224/udp"
-
-  elasticsearch:
-    image: elasticsearch:8.13.0
-    container_name: elasticsearch
-    environment:
-      - "discovery.type=single-node"
-      - xpack.security.enabled=false
-    expose:
-      - "9200"
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-
-  kibana:
-    image: kibana:8.13.0
-    # links:
-    #   - "elasticsearch"
-    ports:
-      - "5601:5601"  
-    environment:
-      ELASTICSEARCH_HOSTS: "http://elasticsearch:9200"
-  # mysql:
-  #   image: mysql:8.0
-  #   container_name: mysql-youpt
-  #   ports:
-  #     - 3306:3306 # HOST:CONTAINER
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-  #     MYSQL_DATABASE: ${DB_NAME}
-  #     TZ: Asia/Seoul
-  #   # 메모리를 파일처럼 사용할 수 있는 시스템
-  #   tmpfs:
-  #     - /var/lib/mysql
-  #   restart: unless-stopped
-  #   command:
-  #     - --character-set-server=utf8mb4
-  #     - --default-authentication-plugin=mysql_native_password
-  #     - --collation-server=utf8mb4_unicode_ci
-  #   extra_hosts:
-  #     - "host.docker.internal:172.17.0.1"
   redis:
     image: redis
     container_name: youpt_redis
-    ports:
-      - 6379:6379
     volumes:
       - ./redis/data:/data
     labels:
@@ -97,3 +11,48 @@ services:
       - 'mode=standalone'
     restart: always
     command: redis-server --requirepass redispassword
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REDIS_HOST=youpt_redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword
+    ports:
+      - 3001:3001
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - redis
+
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    ports:
+      - '24224:24224'
+      - '24224:24224/udp'
+
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    container_name: elasticsearch
+    environment:
+      - 'discovery.type=single-node'
+      - xpack.security.enabled=false
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+
+  kibana:
+    image: kibana:8.13.0
+    ports:
+      - '5601:5601'
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
