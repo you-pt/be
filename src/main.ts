@@ -20,7 +20,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  console.log(process.env.BASE_URL);
 
   app.enableCors({
     origin: [process.env.BASE_URL],
