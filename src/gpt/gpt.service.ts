@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { dietManagerWithCsv, imageToText, translateUseCase } from './use-cases';
@@ -70,22 +70,42 @@ export class GptService {
   //   return dietResponse.content;
   // }
 
+  // public async processImageAndManageDietDB(
+  //   processImageAndManageDietDto: ProcessImageAndManageDietDto,
+  // ): Promise<any> {
+  //   const imageText = await imageToText(this.openai, {
+  //     prompt: processImageAndManageDietDto.imageUrl,
+  //   });
+
+  //   const csvDataArray = await this.getFoodItemData();
+  //   const csvDataString = JSON.stringify(csvDataArray);
+
+  //   const dietResponse = await dietManagerWithCsv(this.openai, {
+  //     prompt: imageText.content,
+  //     csvData: csvDataString,
+  //   });
+  //   return JSON.parse(dietResponse.content);
+  // }
   public async processImageAndManageDietDB(
     processImageAndManageDietDto: ProcessImageAndManageDietDto,
   ): Promise<any> {
-    const imageText = await imageToText(this.openai, {
-      prompt: processImageAndManageDietDto.imageUrl,
-    });
-
-    const csvDataArray = await this.getFoodItemData();
-    const csvDataString = JSON.stringify(csvDataArray);
-
-    const dietResponse = await dietManagerWithCsv(this.openai, {
-      prompt: imageText.content,
-      csvData: csvDataString,
-    });
-
-    return JSON.parse(dietResponse.content);
+    try {
+      const imageText = await imageToText(this.openai, {
+        prompt: processImageAndManageDietDto.imageUrl,
+      });
+      const csvDataArray = await this.getFoodItemData();
+      const csvDataString = JSON.stringify(csvDataArray);
+      const dietResponse = await dietManagerWithCsv(this.openai, {
+        prompt: imageText.content,
+        csvData: csvDataString,
+      });
+      return JSON.parse(dietResponse.content); // 파싱 시도
+    } catch (error) {
+      throw new HttpException(
+        '요청 처리 실패. 다시 시도해 주세요.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
   }
 
   public async translateText({ lang, prompt }: TranslateDto) {
