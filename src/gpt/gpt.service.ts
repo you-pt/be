@@ -86,6 +86,28 @@ export class GptService {
   //   });
   //   return JSON.parse(dietResponse.content);
   // }
+  // public async processImageAndManageDietDB(
+  //   processImageAndManageDietDto: ProcessImageAndManageDietDto,
+  // ): Promise<any> {
+  //   try {
+  //     const imageText = await imageToText(this.openai, {
+  //       prompt: processImageAndManageDietDto.imageUrl,
+  //     });
+  //     const csvDataArray = await this.getFoodItemData();
+  //     const csvDataString = JSON.stringify(csvDataArray);
+  //     const dietResponse = await dietManagerWithCsv(this.openai, {
+  //       prompt: imageText.content,
+  //       csvData: csvDataString,
+  //     });
+  //     return JSON.parse(dietResponse.content); // 파싱 시도
+  //   } catch (error) {
+  //     throw new HttpException(
+  //       '요청 처리 실패. 다시 시도해 주세요.',
+  //       HttpStatus.BAD_REQUEST,
+  //     );
+  //   }
+  // }
+
   public async processImageAndManageDietDB(
     processImageAndManageDietDto: ProcessImageAndManageDietDto,
   ): Promise<any> {
@@ -99,7 +121,15 @@ export class GptService {
         prompt: imageText.content,
         csvData: csvDataString,
       });
-      return JSON.parse(dietResponse.content); // 파싱 시도
+
+      const parsedDietResponse = JSON.parse(dietResponse.content);
+      const translatedEvaluation = await this.translateText2({
+        prompt: parsedDietResponse.reportAI.Evaluation,
+      });
+
+      parsedDietResponse.reportAI.EvaluationTranslated = translatedEvaluation;
+
+      return parsedDietResponse;
     } catch (error) {
       throw new HttpException(
         '요청 처리 실패. 다시 시도해 주세요.',
@@ -108,17 +138,21 @@ export class GptService {
     }
   }
 
-  public async translateText({ lang, prompt }: TranslateDto) {
+  private async translateText({ lang, prompt }: TranslateDto) {
     return await translateUseCase(this.openai, {
       prompt,
       lang,
     });
   }
 
-  public async translateText2({ lang, prompt }: TranslateDto): Promise<string> {
+  private async translateText2({
+    prompt,
+  }: {
+    prompt: string;
+  }): Promise<string> {
     const encodedParams = new URLSearchParams();
-    encodedParams.append('from', 'en');
-    encodedParams.append('to', lang);
+    encodedParams.append('from', 'auto'); // 자동 언어 감지로 변경
+    encodedParams.append('to', 'ko');
     encodedParams.append('text', prompt);
 
     const options = {
@@ -134,7 +168,8 @@ export class GptService {
 
     try {
       const response = await firstValueFrom(this.httpService.request(options));
-      return response.data;
+      const translation = response.data;
+      return translation.trans;
     } catch (error) {
       console.error('Error in translation:', error);
       throw error;
