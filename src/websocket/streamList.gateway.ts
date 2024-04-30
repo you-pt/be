@@ -15,7 +15,7 @@ import { RoomListService } from 'src/room-list/room-list.service';
 import { CreateChatDto } from './dto/create-chat.dto';
 
 @WebSocketGateway({
-  path: '/back/',
+  path: '/socket/',
   cors: {},
 })
 export class StreamListGateway
