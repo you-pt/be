@@ -22,9 +22,14 @@ async function bootstrap() {
   );
 
   app.enableCors({
-    origin: [process.env.BASE_URL],
+    origin: [
+      process.env.BASE_URL,
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ],
     credentials: true,
   });
+  
   const config = new DocumentBuilder()
     .setTitle('YOU-PT API')
     .setDescription('YOU-PT API 테스트 입니다.')
