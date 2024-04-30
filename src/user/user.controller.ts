@@ -82,15 +82,21 @@ export class UserController {
     return this.userService.findAll(role, page | 1, perPage | 10);
   }
 
-  @UseGuards(AuthGuard('jwt'))
-  @Get('trainer')
-  findTrainer(@Query('page') page: number, @Query('perPage') perPage: number) {
-    return this.userService.findTrainer(page | 1, perPage| 10)
-  }
+  // @UseGuards(AuthGuard('jwt'))
+  // @Get('trainer')
+  // findTrainer(@Query('page') page: number, @Query('perPage') perPage: number) {
+  //   return this.userService.findTrainer(page | 1, perPage| 10)
+  // }
+
+  // @UseGuards(AuthGuard('jwt'))
+  // @Get(':id')
+  // findOne(@Param('id') id: number) {
+  //   return this.userService.findOne(id);
+  // }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.userService.findOne(id);
+  @Get("trainers")
+  async findTrainers(){
+    return await this.userService.findTrainers();
   }
 }
