@@ -23,8 +23,8 @@ import { User } from '../entities/user.entity';
 export class ScheduleController {
   constructor(private readonly scheduleService: ScheduleService) {}
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.Trainer)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.Trainer)
   @Post()
   create(@Body() createScheduleDto: CreateScheduleDto, @UserInfo() user: User) {
     return this.scheduleService.create(createScheduleDto, user.id);

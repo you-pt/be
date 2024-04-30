@@ -44,26 +44,26 @@ export class ScheduleService {
     });
 
     const user = await this.userService.findOne(createScheduleDto.userId);
-    const trainerUser = await this.userService.findOne(trainerId);
+    const trainedUser = await this.userService.findOne(trainerId);
 
     let dateStr = createScheduleDto.ptDate + 'T' + createScheduleDto.ptTime;
     let date = new Date(dateStr);
     date.setMinutes(date.getMinutes() - 10);
 
     await this.messageService.fcm(
-      `${user.token}`,
+      `${trainedUser.token}`,
       '일정 생성 완료!',
       `날짜 : ${new Date(dateStr).toLocaleString()}`,
     );
 
     await this.messageService.fcm(
-      `${trainerUser.token}`,
-      `${user.nickname} 님의 일정 생성 완료!`,
+      `${user.token}`,
+      `${trainedUser.nickname} 님이 ${createScheduleDto.ptDate},${createScheduleDto.ptTime}에 PT를 신청하셨습니다!`,
       `날짜 : ${new Date(dateStr).toLocaleString()}`,
     );
 
     await this.messageService.addCronJob(
-      `${user.token}`,
+      `${trainedUser.token}`,
       'PT를 준비해주세요! 10분 뒤 시작합니다!',
       `날짜 : ${new Date(dateStr).toLocaleString()}`,
       date,
@@ -71,8 +71,8 @@ export class ScheduleService {
     );
 
     await this.messageService.addCronJob(
-      `${trainerUser.token}`,
-      `PT를 준비해주세요! ${user.nickname}의 PT가 10분 뒤 시작합니다!`,
+      `${user.token}`,
+      `PT를 준비해주세요! ${trainedUser.nickname}님의 PT가 10분 뒤 시작합니다!`,
       `날짜 : ${new Date(dateStr).toLocaleString()}`,
       date,
       cronJobId,
