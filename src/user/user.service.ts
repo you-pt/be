@@ -190,4 +190,10 @@ export class UserService {
   async findByNickname(nickname: string) {
     return await this.userRepository.findOneBy({ nickname });
   }
+
+  async findTrainers(){
+    return await this.userRepository.find({
+      where: { role: Role.Trainer }
+    })
+  }
 }
