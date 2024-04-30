@@ -193,7 +193,8 @@ export class UserService {
 
   async findTrainers(){
     return await this.userRepository.find({
-      where: { role: Role.Trainer }
+      where: { role: Role.Trainer },
+      select: {id: true, nickname: true}
     })
   }
 }
