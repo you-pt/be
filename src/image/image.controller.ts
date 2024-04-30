@@ -36,11 +36,11 @@ export class ImageController {
       },
     },
   })
-  @UseGuards(new FileSizeGuard(256000)) // 바이트 단위
+  // @UseGuards(new FileSizeGuard(256000)) // 바이트 단위
   @Post('/upload')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
     const newFile = await this.imageService.upload(file);
-    return {url: newFile["Location"]}
+    return { url: newFile['Location'] };
   }
 }

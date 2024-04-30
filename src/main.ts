@@ -29,7 +29,7 @@ async function bootstrap() {
     ],
     credentials: true,
   });
-  
+
   const config = new DocumentBuilder()
     .setTitle('YOU-PT API')
     .setDescription('YOU-PT API 테스트 입니다.')
