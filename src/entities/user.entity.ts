@@ -35,19 +35,19 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   name: string;
 
-  @Column({ type: 'enum', enum: Gender, nullable: false })
+  @Column({ type: 'enum', enum: Gender, nullable: true })
   gender: Gender;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   phone: string;
 
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: true })
   birth: string;
 
   @Column({ type: 'enum', enum: Role, default: Role.User, nullable: false })
   role: Role;
   
-  @Column()
+  @Column({nullable: true})
   token: string;
 
   @CreateDateColumn()
