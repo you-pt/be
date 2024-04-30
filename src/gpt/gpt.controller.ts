@@ -1,25 +1,19 @@
 import {
   Body,
   Controller,
-  // HttpStatus,
   UseInterceptors,
   Post,
   UseGuards,
-  SetMetadata,
   Patch,
   Param,
   ParseIntPipe,
-  // Res,
-  // Get,
 } from '@nestjs/common';
-// import { Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import { RolesGuard } from 'auth/roles.guard';
 import { GptService } from './gpt.service';
 import { User } from 'src/entities/user.entity';
 import {
   ProsConsDiscusserDto,
-  TranslateDto,
   ProcessImageAndManageDietDto,
   SaveResultDto,
   ReportMealDto,
@@ -58,15 +52,6 @@ export class GptController {
     return this.gptService.imageToText(prosConsDiscusserDto);
   }
 
-  // @Post('dietManagerWithCsv')
-  // public async dietManagerWithCsv(
-  //   @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
-  // ) {
-  //   return this.gptService.dietManagerWithCsvUsingLocalData(
-  //     prosConsDiscusserDto,
-  //   );
-  // }
-
   @ApiOperation({ summary: 'gpt3.5로 이미지에 대한 텍스트 생성' })
   @ApiBody({
     schema: {
@@ -87,15 +72,6 @@ export class GptController {
   ) {
     return this.gptService.dietManagerWithDB(prosConsDiscusserDto);
   }
-
-  // @Post('processImageAndManageDiet')
-  // public async processImageAndManageDiet(
-  //   @Body() processImageAndManageDietDto: ProcessImageAndManageDietDto,
-  // ) {
-  //   return this.gptService.processImageAndManageDiet(
-  //     processImageAndManageDietDto,
-  //   );
-  // }
 
   @ApiOperation({ summary: '이미지 인식 + 텍스트 생성' })
   @ApiBody({
@@ -165,20 +141,4 @@ export class GptController {
     const newReport = reportMealDto.report;
     return this.gptService.updateMeal(mealId, newReport);
   }
-
-  // DB에 csv파일 내용 올리는 함수
-  // @Post('saveCsvOnDb')
-  // async uploadCsv(@Res() response: Response) {
-  //   try {
-  //     await this.gptService.saveCsvOnDb();
-  //     return response.status(HttpStatus.OK).json({
-  //       message: 'CSV가 성공적으로 저장되었습니다.',
-  //     });
-  //   } catch (error) {
-  //     return response.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-  //       message: 'CSV업로드중 Error 발생 ',
-  //       error: error.message,
-  //     });
-  //   }
-  // }
 }
