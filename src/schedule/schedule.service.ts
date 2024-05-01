@@ -38,8 +38,8 @@ export class ScheduleService {
         `${createScheduleDto.ptDate}T${createScheduleDto.ptTime}`,
       ),
       content: createScheduleDto.content,
-      userId: createScheduleDto.userId,
-      trainerId,
+      userId: trainerId,
+      trainerId: createScheduleDto.userId,
       cronJobId,
     });
 
