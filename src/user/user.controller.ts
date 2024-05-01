@@ -48,6 +48,8 @@ export class UserController {
     const jwt = await  this.userService.login(loginDto);
     res.cookie('Authorization', jwt.access_token, {
         httpOnly: true,
+        sameSite: 'none',
+        secure: true,
         maxAge: 12 * 60 * 60 * 1000
     })
     return {message: "로그인 성공!"};
