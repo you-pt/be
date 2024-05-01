@@ -5,42 +5,46 @@ import { RedisService } from './redis/redis.provider';
 import { RoboMaker } from 'aws-sdk';
 
 export interface createReturn {
-  message: string
+  message: string;
 }
 
 export interface findRoomListReturn {
-  sessionName: string,
-  participantNumber: number
+  sessionName: string;
+  participantNumber: number;
 }
 
-export type findRoomParticipantsReturn = string[]
+export type findRoomParticipantsReturn = string[];
 
 @Injectable()
 export class RoomListService {
   constructor(private readonly redisService: RedisService) {}
 
-  async create (room: CreateRoomListDto): Promise<createReturn> {
+  async create(room: CreateRoomListDto): Promise<createReturn> {
     const { sessionId, participant, subscribers } = room;
     if (!sessionId || !participant) {
       throw new NotFoundException('데이터가 잘못되었습니다');
     }
-    const newRoom = await this.redisService.client.sadd(sessionId, participant);
+    const roomKey = `room:${sessionId}`;
+    const newRoom = await this.redisService.client.sadd(roomKey, participant);
     return { message: '데이터를 저장했습니다.' };
   }
 
   async findRoomList(): Promise<findRoomListReturn[]> {
-    const roomList: string[] = await this.redisService.client.keys('*');
+    const roomList: string[] = await this.redisService.client.keys('room:*');
     return Promise.all(
       roomList.map(async (roomName): Promise<findRoomListReturn> => {
         const roomParticipants: string[] =
           await this.findRoomParticipants(roomName);
         const roomUserNumber: number = roomParticipants.length;
-        return { sessionName: roomName, participantNumber: roomUserNumber };
+        const sessionName: string = roomName.replace('room:', '');
+        return { sessionName: sessionName, participantNumber: roomUserNumber };
       }, this),
     );
   }
 
-  async findRoomParticipants(roomName: string): Promise<findRoomParticipantsReturn> {
+  async findRoomParticipants(
+    roomName: string,
+  ): Promise<findRoomParticipantsReturn> {
     if (roomName === '' || !roomName) {
       throw new NotFoundException('방 제목을 입력해주세요.');
     }
