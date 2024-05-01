@@ -24,9 +24,16 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   private static extractJWT(req: RequestType): string | null {
-    if (req.headers.cookie && req.headers.cookie.length > 0) {
-      const [key, value] = req.headers.cookie.split('=');
-      return value;
+    const cookieHeader = req.headers.cookie;
+    if (cookieHeader) {
+      const cookies = cookieHeader.split('; ');
+      for (const cookie of cookies) {
+        const [key, value] = cookie.split('=');
+        if (key.trim() === 'Authorization') {
+          const token = value;
+          return token;
+        }
+      }
     }
     return null;
   }
