@@ -1,0 +1,58 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis
+    container_name: youpt_redis
+    volumes:
+      - ./redis/data:/data
+    labels:
+      - 'name=redis'
+      - 'mode=standalone'
+    restart: always
+    command: redis-server --requirepass redispassword
+
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - /usr/src/app/node_modules
+      - .:/usr/src/app
+    restart: unless-stopped
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - REDIS_HOST=youpt_redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redispassword
+    ports:
+      - 3001:3001
+      - 9229:9229
+    command: npm run start:dev
+    depends_on:
+      - redis
+
+  fluentd:
+    build: ./fluentd
+    volumes:
+      - ./fluentd/conf:/fluentd/etc
+    ports:
+      - '24224:24224'
+      - '24224:24224/udp'
+
+  elasticsearch:
+    image: elasticsearch:8.13.0
+    container_name: elasticsearch
+    environment:
+      - 'discovery.type=single-node'
+      - xpack.security.enabled=false
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+
+  kibana:
+    image: kibana:8.13.0
+    ports:
+      - '5601:5601'
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
